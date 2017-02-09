@@ -15,8 +15,4 @@ public class FixedWidth : MonoBehaviour {
         camera.orthographicSize = size;
     }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
