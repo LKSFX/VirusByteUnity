@@ -5,7 +5,6 @@ using UnityEngine;
 public class FpsViewer : MonoBehaviour {
     private GUIStyle _style = new GUIStyle();
     private Rect _rect;
-    private Color _textColor;
     private string _text;
 
     public float updateInterval = 0.5f;
@@ -19,7 +18,6 @@ public class FpsViewer : MonoBehaviour {
         _rect = new Rect(0, 0, Screen.width, Screen.height * 2 / 100);
         _style.alignment = TextAnchor.UpperLeft;
         _style.fontSize = Screen.height * 2 / 100;
-        _style.normal.textColor = new Color(1f, 1f, 0f, 1f);
         _timeleft = updateInterval;
 	}
 	
