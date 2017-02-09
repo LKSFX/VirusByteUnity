@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: LayerSprites0
+    uniqueID: 2421504985
+    locked: 0
+  - name: LayerSprites1
+    uniqueID: 1510135423
+    locked: 0
+  - name: LayerItems
+    uniqueID: 1866884201
+    locked: 0
+  - name: LayerHud
+    uniqueID: 1866246053
+    locked: 0
