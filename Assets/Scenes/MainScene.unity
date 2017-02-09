@@ -273,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45a2d89bbd606314abf765f4852146d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  updateInterval: 0.5
 --- !u!1 &1977543658
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,6 +366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1ef37c26cb30da4b954b8d37692d140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetGrabScale: 1
+  growSpeed: 0.4
+  shrinkSpeed: 0.4
 --- !u!95 &1977543663
 Animator:
   serializedVersion: 3
@@ -372,7 +376,7 @@ Animator:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1977543658}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 89cd82729deb0e244885f5aa7a82e37e, type: 2}
   m_CullingMode: 0
