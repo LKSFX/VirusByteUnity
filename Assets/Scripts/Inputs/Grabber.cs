@@ -14,6 +14,8 @@ public class Grabber : MonoBehaviour {
     private Camera _camera;
     private Vector3 _originalScale;
     private Vector3 _metaScale;
+    private Vector3 _deltaScale;
+    private Vector3 _halfScale;
 
     private GrabState _state = GrabState.STATIC;
 
@@ -22,16 +24,15 @@ public class Grabber : MonoBehaviour {
     private bool _hasCalledHalfAlert; //definido como falso quando agarrado e solto; verdadeiro quando a escala ultrapassa a metade da meta. 
 
     private float _startTime;
-    private float _scaleLength;
 
     public enum GrabState { GROWING, STATIC, SHRINKING }
 
     [Range(1, 5)]
     public float targetGrabScale = 1f; // escala do objeto quando agarrado
     [Range(0.1f, 1f)]
-    public float growSpeed;
+    public float growDuration;
     [Range(0.1f, 1f)]
-    public float shrinkSpeed;
+    public float shrinkDuration;
 
     private void Start() {
         _prTransform = transform.parent;
@@ -40,7 +41,7 @@ public class Grabber : MonoBehaviour {
         var vec = Vector3.one * targetGrabScale;
         vec.z = 0; // Não modificar o eixo Z
         _metaScale = _originalScale + vec;
-        _scaleLength = Vector3.Distance(_originalScale, _metaScale);    
+        _halfScale = _originalScale + vec * .5f; // Half meta convertido
     }
 
     private void OnMouseDrag() {
@@ -60,33 +61,36 @@ public class Grabber : MonoBehaviour {
     }
 
     private void Update() {
-        float sclCovered;
+        float timeCovered;
         float fracScale;
-        float sclTargetDistance;
         Vector3 currentScale;
         switch (_state) {
             case GrabState.GROWING:
                 // Quando estiver sendo agarrado
-                sclCovered = (Time.time - _startTime) * growSpeed;
-                fracScale = sclCovered / _scaleLength;
-                currentScale = Vector3.LerpUnclamped(transform.localScale, _metaScale, fracScale);
+                timeCovered = (Time.time - _startTime);
+                fracScale = timeCovered / growDuration;
+                currentScale = Vector3.Lerp(_deltaScale, _metaScale, fracScale);
                 transform.localScale = currentScale;
-                sclTargetDistance = Mathf.Abs(currentScale.sqrMagnitude - _metaScale.sqrMagnitude);
-                if (sclTargetDistance < 0.01) {
-                    transform.localScale = _metaScale;
+                if (currentScale.sqrMagnitude >= _metaScale.sqrMagnitude) {
                     growEnd();
+                }
+                else if (!_hasCalledHalfAlert && currentScale.sqrMagnitude >= _halfScale.sqrMagnitude) {
+                    onGrabHalfTargetScale();
+                    _hasCalledHalfAlert = true; // Este pedaço do código será chamado apenas uma vez durante o estado GROW
                 }
                 break;
             case GrabState.SHRINKING:
                 // Quando estiver caindo
-                sclCovered = (Time.time - _startTime) * shrinkSpeed;
-                fracScale = sclCovered / _scaleLength;
-                currentScale = Vector3.LerpUnclamped(transform.localScale, _originalScale, fracScale);
+                timeCovered = (Time.time - _startTime);
+                fracScale = timeCovered / shrinkDuration;
+                currentScale = Vector3.Lerp(_deltaScale, _originalScale, fracScale);
                 transform.localScale = currentScale;
-                sclTargetDistance = Mathf.Abs(currentScale.sqrMagnitude - _originalScale.sqrMagnitude);
-                if (sclTargetDistance < 0.01) {
-                    transform.localScale = _originalScale;
+                if (currentScale.sqrMagnitude <= _originalScale.sqrMagnitude) {
                     shrinkEnd();
+                }
+                else if (!_hasCalledHalfAlert && currentScale.sqrMagnitude <= _halfScale.sqrMagnitude) {
+                    onDropHalfTargetScale();
+                    _hasCalledHalfAlert = true; // Este pedaço do código será chamado apenas uma vez durante o estado SHRINK
                 }
                 break;
             case GrabState.STATIC:
@@ -95,54 +99,78 @@ public class Grabber : MonoBehaviour {
         }
     }
 
-    // Métodos privados não implementáveis
+    // GETS públicos
+
+    public GrabState getGrabState() {
+        return _state;
+    }
+
+    // Métodos privados não implementáveis externamente
 
     private void grabStart() {
         if (!_isGrabbed) {
             // Grab só iniciará uma vez
-            if (_isDebug)
-                log("grabStart");
             _isGrabbed = true;
             _state = GrabState.GROWING;
             _startTime = Time.time;
             _hasCalledHalfAlert = false;
+            _deltaScale = transform.localScale;
+            
+            onGrabStart(); // Chama método aviso Grab para as subclasses poderem implementar
         }
     }
 
     private void growEnd() {
-        if (_isDebug)
-            log("growEnd");
         _state = GrabState.STATIC;
+        onGrabTargetScale(); // Chama método implementável quando a animação de GROW tiver terminado
     }
 
     private void dropStart() {
-        if (_isDebug)
-            log("dropStart");
         _isGrabbed = false;
         _state = GrabState.SHRINKING;
         _startTime = Time.time;
         _hasCalledHalfAlert = false;
+        _deltaScale = transform.localScale;
+        onDropStart(); // Chama método aviso Drop para as subclasses poderem implementar
     }
 
     private void shrinkEnd() {
-        if (_isDebug)
-            log("shrinkEnd");
         _state = GrabState.STATIC;
+        onDropTargetScale(); // Chama método implementável quando a animação SHRINK tiver terminado
     }
 
-    // Métodos públicos implementáveis
+    // Métodos públicos implementáveis externamente
 
-    public virtual void onGrabStart() { }
+    public virtual void onGrabStart() {
+        if (_isDebug)
+            log("grabStart");
+    }
 
-    public virtual void onGrabHalfTargetScale() { }
+    public virtual void onGrabHalfTargetScale() {
+        if (_isDebug) {
+            log("growHalf");
+        }
+    }
 
-    public virtual void onGrabTargetScale() { }
+    public virtual void onGrabTargetScale() {
+        if (_isDebug)
+            log("growEnd");
+    }
 
-    public virtual void onDropStart() { }
+    public virtual void onDropStart() {
+        if (_isDebug)
+            log("dropStart");
+    }
 
-    public virtual void onDropHalfTargetScale() { }
+    public virtual void onDropHalfTargetScale() {
+        if (_isDebug)
+            log("dropHalf");
+    }
 
-    public virtual void onDropTargetScale() { }
+    public virtual void onDropTargetScale() {
+        if (_isDebug)
+            log("shrinkEnd");
+    }
 
     public void log(string msg) {
         print(transform.parent.name + " -> " + msg);

@@ -367,8 +367,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetGrabScale: 1
-  growSpeed: 0.4
-  shrinkSpeed: 0.4
+  growDuration: 0.5
+  shrinkDuration: 0.3
 --- !u!95 &1977543663
 Animator:
   serializedVersion: 3
