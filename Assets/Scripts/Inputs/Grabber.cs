@@ -34,7 +34,7 @@ public class Grabber : MonoBehaviour {
     [Range(0.1f, 1f)]
     public float shrinkDuration;
 
-    private void Start() {
+    protected virtual void Start() {
         _prTransform = transform.parent;
         _camera = FindObjectOfType<Camera>();
         _originalScale = transform.localScale;
@@ -60,7 +60,7 @@ public class Grabber : MonoBehaviour {
         dropStart();
     }
 
-    private void Update() {
+    protected virtual void Update() {
         float timeCovered;
         float fracScale;
         Vector3 currentScale;
