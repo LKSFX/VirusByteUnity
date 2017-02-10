@@ -11,9 +11,7 @@ public class ItemGrabber : Grabber {
         _sprRender = GetComponent<SpriteRenderer>();
     }
 
-    protected override void Update() {
-        base.Update();
-
+    protected virtual void Update() {
         if (Input.GetKeyDown(KeyCode.Space)) {
             print("Pressed Space key");
             StartCoroutine(Fade());

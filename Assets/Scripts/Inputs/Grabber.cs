@@ -14,16 +14,12 @@ public class Grabber : MonoBehaviour {
     private Camera _camera;
     private Vector3 _originalScale;
     private Vector3 _metaScale;
-    private Vector3 _deltaScale;
     private Vector3 _halfScale;
 
     private GrabState _state = GrabState.STATIC;
 
     private bool _isDebug = true;
     private bool _isGrabbed;
-    private bool _hasCalledHalfAlert; //definido como falso quando agarrado e solto; verdadeiro quando a escala ultrapassa a metade da meta. 
-
-    private float _startTime;
 
     public enum GrabState { GROWING, STATIC, SHRINKING }
 
@@ -60,43 +56,44 @@ public class Grabber : MonoBehaviour {
         dropStart();
     }
 
-    protected virtual void Update() {
-        float timeCovered;
-        float fracScale;
-        Vector3 currentScale;
-        switch (_state) {
-            case GrabState.GROWING:
-                // Quando estiver sendo agarrado
-                timeCovered = (Time.time - _startTime);
-                fracScale = timeCovered / growDuration;
-                currentScale = Vector3.Lerp(_deltaScale, _metaScale, fracScale);
-                transform.localScale = currentScale;
-                if (currentScale.sqrMagnitude >= _metaScale.sqrMagnitude) {
-                    growEnd();
-                }
-                else if (!_hasCalledHalfAlert && currentScale.sqrMagnitude >= _halfScale.sqrMagnitude) {
-                    onGrabHalfTargetScale();
-                    _hasCalledHalfAlert = true; // Este pedaço do código será chamado apenas uma vez durante o estado GROW
-                }
-                break;
-            case GrabState.SHRINKING:
-                // Quando estiver caindo
-                timeCovered = (Time.time - _startTime);
-                fracScale = timeCovered / shrinkDuration;
-                currentScale = Vector3.Lerp(_deltaScale, _originalScale, fracScale);
-                transform.localScale = currentScale;
-                if (currentScale.sqrMagnitude <= _originalScale.sqrMagnitude) {
-                    shrinkEnd();
-                }
-                else if (!_hasCalledHalfAlert && currentScale.sqrMagnitude <= _halfScale.sqrMagnitude) {
-                    onDropHalfTargetScale();
-                    _hasCalledHalfAlert = true; // Este pedaço do código será chamado apenas uma vez durante o estado SHRINK
-                }
-                break;
-            case GrabState.STATIC:
-
-                break;
+    IEnumerator Grow() {
+        bool reachedHalfScale = false;
+        float startTime = Time.time;
+        Vector3 deltaScale = transform.localScale;
+        Vector3 currentScale = Vector3.Lerp(deltaScale, _metaScale, 0);
+        while (currentScale.sqrMagnitude < _metaScale.sqrMagnitude) {
+            // Quando estiver sendo agarrado
+            var timeCovered = (Time.time - startTime);
+            var fracScale = timeCovered / growDuration;
+            currentScale = Vector3.Lerp(deltaScale, _metaScale, fracScale);
+            transform.localScale = currentScale;
+            if (!reachedHalfScale && currentScale.sqrMagnitude >= _halfScale.sqrMagnitude) {
+                onGrabHalfTargetScale();
+                reachedHalfScale = true; // Este pedaço do código será chamado apenas uma vez durante o estado GROW
+            }
+            yield return null;
         }
+        growEnd();
+    }
+
+    IEnumerator Shrink() {
+        bool reachedHalfScale = false;
+        float startTime = Time.time;
+        Vector3 deltaScale = transform.localScale;
+        Vector3 currentScale = Vector3.Lerp(deltaScale, _originalScale, 0);
+        while(currentScale.sqrMagnitude > _originalScale.sqrMagnitude) {
+            // Quando estiver caindo
+            var timeCovered = (Time.time - startTime);
+            var fracScale = timeCovered / shrinkDuration;
+            currentScale = Vector3.Lerp(deltaScale, _originalScale, fracScale);
+            transform.localScale = currentScale;
+            if (!reachedHalfScale && currentScale.sqrMagnitude <= _halfScale.sqrMagnitude) {
+                onDropHalfTargetScale();
+                reachedHalfScale = true; // Este pedaço do código será chamado apenas uma vez durante o estado SHRINK
+            }
+            yield return null;
+        }
+        shrinkEnd();
     }
 
     // GETS públicos
@@ -112,10 +109,8 @@ public class Grabber : MonoBehaviour {
             // Grab só iniciará uma vez
             _isGrabbed = true;
             _state = GrabState.GROWING;
-            _startTime = Time.time;
-            _hasCalledHalfAlert = false;
-            _deltaScale = transform.localScale;
-            
+            StopAllCoroutines();
+            StartCoroutine(Grow());
             onGrabStart(); // Chama método aviso Grab para as subclasses poderem implementar
         }
     }
@@ -128,9 +123,8 @@ public class Grabber : MonoBehaviour {
     private void dropStart() {
         _isGrabbed = false;
         _state = GrabState.SHRINKING;
-        _startTime = Time.time;
-        _hasCalledHalfAlert = false;
-        _deltaScale = transform.localScale;
+        StopAllCoroutines();
+        StartCoroutine(Shrink());
         onDropStart(); // Chama método aviso Drop para as subclasses poderem implementar
     }
 
