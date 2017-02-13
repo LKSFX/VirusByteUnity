@@ -20,9 +20,11 @@ public class Grabber : MonoBehaviour {
 
     private bool _isDebug = true;
     private bool _isGrabbed;
+    private bool _hasParent;
 
     public enum GrabState { GROWING, STATIC, SHRINKING }
 
+    public bool isRelative = false;
     [Range(1, 5)]
     public float targetGrabScale = 1f; // escala do objeto quando agarrado
     [Range(0.1f, 1f)]
@@ -32,6 +34,7 @@ public class Grabber : MonoBehaviour {
 
     protected virtual void Start() {
         _prTransform = transform.parent;
+        _hasParent = _prTransform != null;
         _camera = FindObjectOfType<Camera>();
         _originalScale = transform.localScale;
         var vec = Vector3.one * targetGrabScale;
@@ -42,13 +45,22 @@ public class Grabber : MonoBehaviour {
 
     private void OnMouseDrag() {
         // Arrasta objeto 
-        var prPos = _prTransform.position; // posição do objeto pai
-        var localPos = transform.localPosition; // posição local atual
-        var mousePos = Input.mousePosition; // posição atual do mouse ou touch
-        var mousePosWorld = _camera.ScreenToWorldPoint(mousePos); // posição do mouse em relação ao mundo
-        localPos.z = 0;
-        var tPos = mousePosWorld - localPos;
-        _prTransform.position = tPos;
+        if (isRelative && _hasParent) {
+            // Posição será ajustada em relação ao objeto PAI
+            var prPos = _prTransform.position; // posição do objeto pai
+            var localPos = transform.localPosition; // posição local atual
+            var mousePos = Input.mousePosition; // posição atual do mouse ou touch
+            var mousePosWorld = _camera.ScreenToWorldPoint(mousePos); // posição do mouse em relação ao mundo
+            localPos.z = 0;
+            var tPos = mousePosWorld - localPos;
+            _prTransform.position = tPos;
+        } else {
+            // Posição será ajustada em relação ao MUNDO
+            var mousePos = Input.mousePosition;
+            var mousePosWorld = _camera.ScreenToWorldPoint(mousePos);
+            mousePosWorld.z = 0;
+            transform.position = mousePosWorld;
+        }
         grabStart();
     }
 
@@ -167,6 +179,7 @@ public class Grabber : MonoBehaviour {
     }
 
     public void log(string msg) {
-        print(transform.parent.name + " -> " + msg);
+        var objectName = isRelative && _hasParent ? transform.parent.name : gameObject.name;
+        print(objectName + " -> " + msg);
     }
 }

@@ -9,6 +9,8 @@ public class Bomb : MonoBehaviour {
 
 	void Awake () {
         _bomb = Instantiate(bombBody, transform, false);
+        _bomb.GetComponent<Grabber>().isRelative = true;
+        _bomb.GetComponent<Animator>().enabled = true;
         print("AWAKE");
 	}
 	
