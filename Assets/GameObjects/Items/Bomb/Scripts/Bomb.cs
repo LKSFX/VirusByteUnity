@@ -8,7 +8,7 @@ public class Bomb : MonoBehaviour {
     private GameObject _bomb;
 
 	void Awake () {
-        _bomb = (GameObject)Instantiate(bombBody, transform);
+        _bomb = Instantiate(bombBody, transform, false);
         print("AWAKE");
 	}
 	

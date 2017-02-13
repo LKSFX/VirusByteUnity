@@ -2,20 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AndroidToast {
+public static class Toast {
+#if !UNITY_EDITOR && UNITY_ANDROID
+    private static AndroidJavaClass _unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+    private static AndroidJavaObject _currentActivity = _unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+#else
+    private static AndroidJavaClass _unityPlayer;
+    private static AndroidJavaObject _currentActivity;
+#endif
+    private static string _deltaMessage;
+    private static bool _isDebug = true;
 
-    private string _deltaMessage;
-    private bool _isDebug = true;
-    private AndroidJavaObject _currentActivity;
-
-	public void show(string msg) {
+	public static void show(string msg) {
         showToastOnUiThread(msg);
     }
 
-    private void showToastOnUiThread(string msg) {
+    private static void showToastOnUiThread(string msg) {
 #if !UNITY_EDITOR && UNITY_ANDROID
-        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        _currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         _deltaMessage = msg;
         _currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(toast));
 #else
@@ -23,7 +26,7 @@ public class AndroidToast {
 #endif
     }
 
-    private void toast() {
+    private static void toast() {
         if (_isDebug)
             Debug.Log("UnityToast -> Running on Ui thread");
         AndroidJavaObject context = _currentActivity.Call<AndroidJavaObject>("getApplicationContext");
