@@ -11,7 +11,7 @@ public class FixedWidth : MonoBehaviour {
         // 1.78 pixel de altura para cada pixel de largura 
         var ratio = (float)Screen.height / (float)Screen.width;
         var screenHeight = fixedWidth * ratio;
-        var size = screenHeight / 160;
+        var size = screenHeight / 200;
         camera.orthographicSize = size;
     }
 	
