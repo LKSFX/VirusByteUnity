@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: LayerBackgrounds
+    uniqueID: 3011243183
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
@@ -52,7 +55,4 @@ TagManager:
     locked: 0
   - name: LayerHud
     uniqueID: 1866246053
-    locked: 0
-  - name: LayerBackgrounds
-    uniqueID: 3011243183
     locked: 0
