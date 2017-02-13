@@ -53,3 +53,6 @@ TagManager:
   - name: LayerHud
     uniqueID: 1866246053
     locked: 0
+  - name: LayerBackgrounds
+    uniqueID: 3011243183
+    locked: 0
