@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Os movimentos vão mover o transform parent do objeto onde estiver inserido este script.
@@ -8,7 +9,7 @@ using UnityEngine;
 /// Isso evita problemas, no caso deste objeto onde o script se encontra estar animado. 
 /// Em geral, deve estar ligado a um sprite, algo visível.
 /// </summary>
-public class Grabber : MonoBehaviour {
+public class Grabber : MonoBehaviour, IDragHandler {
 
     private Transform _prTransform; // parent transform
     private Camera _camera;
@@ -43,29 +44,29 @@ public class Grabber : MonoBehaviour {
         _halfScale = _originalScale + vec * .5f; // Half meta convertido
     }
 
-    private void OnMouseDrag() {
+    public void OnDrag(PointerEventData eventData) {
         // Arrasta objeto 
         if (isRelative && _hasParent) {
             // Posição será ajustada em relação ao objeto PAI
             var prPos = _prTransform.position; // posição do objeto pai
             var localPos = transform.localPosition; // posição local atual
-            var mousePos = Input.mousePosition; // posição atual do mouse ou touch
-            var mousePosWorld = _camera.ScreenToWorldPoint(mousePos); // posição do mouse em relação ao mundo
+            var mousePosWorld = _camera.ScreenToWorldPoint(eventData.position); // posição do mouse em relação ao mundo
             localPos.z = 0;
             var tPos = mousePosWorld - localPos;
             _prTransform.position = tPos;
         } else {
             // Posição será ajustada em relação ao MUNDO
-            var mousePos = Input.mousePosition;
-            var mousePosWorld = _camera.ScreenToWorldPoint(mousePos);
-            mousePosWorld.z = 0;
+            var mousePosWorld = _camera.ScreenToWorldPoint(eventData.position);
+            mousePosWorld.z = transform.position.z;
             transform.position = mousePosWorld;
         }
         grabStart();
     }
 
     private void OnMouseUp() {
-        dropStart();
+        if (_isGrabbed) {
+            dropStart();
+        }
     }
 
     IEnumerator Grow() {
