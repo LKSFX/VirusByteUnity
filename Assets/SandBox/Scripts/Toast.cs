@@ -14,16 +14,16 @@ public static class Toast {
     private static bool _isDebug = true;
 
 	public static void show(string msg) {
-        showToastOnUiThread(msg);
-    }
-
-    private static void showToastOnUiThread(string msg) {
 #if !UNITY_EDITOR && UNITY_ANDROID
-        _deltaMessage = msg;
-        _currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(toast));
+        showToastOnUiThread(msg);
 #else
         Debug.Log("UnityToast -> " + msg);
 #endif
+    }
+
+    private static void showToastOnUiThread(string msg) {
+        _deltaMessage = msg;
+        _currentActivity.Call("runOnUiThread", new AndroidJavaRunnable(toast));
     }
 
     private static void toast() {

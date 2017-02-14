@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,19 +10,19 @@ using UnityEngine.EventSystems;
 /// Isso evita problemas, no caso deste objeto onde o script se encontra estar animado. 
 /// Em geral, deve estar ligado a um sprite, algo visível.
 /// </summary>
-public class Grabber : MonoBehaviour, IDragHandler {
+public class Grabber : MonoBehaviour, IPointerDownHandler {
 
     private Transform _prTransform; // parent transform
-    private Camera _camera;
     private Vector3 _originalScale;
     private Vector3 _metaScale;
     private Vector3 _halfScale;
+    protected Camera _camera;
 
     private GrabState _state = GrabState.STATIC;
 
     private bool _isDebug = true;
-    private bool _isGrabbed;
     private bool _hasParent;
+    protected bool _isGrabbed;
 
     public enum GrabState { GROWING, STATIC, SHRINKING }
 
@@ -44,27 +45,41 @@ public class Grabber : MonoBehaviour, IDragHandler {
         _halfScale = _originalScale + vec * .5f; // Half meta convertido
     }
 
-    public void OnDrag(PointerEventData eventData) {
+    protected virtual void Update() {
+        if (_isGrabbed) {
+            positionUpdate();
+        }
+    }
+
+    private void positionUpdate() {
         // Arrasta objeto 
         if (isRelative && _hasParent) {
             // Posição será ajustada em relação ao objeto PAI
             var prPos = _prTransform.position; // posição do objeto pai
             var localPos = transform.localPosition; // posição local atual
-            var mousePosWorld = _camera.ScreenToWorldPoint(eventData.position); // posição do mouse em relação ao mundo
+            var mousePos = Input.mousePosition;
+            var mousePosWorld = _camera.ScreenToWorldPoint(mousePos); // posição do mouse em relação ao mundo
             localPos.z = 0;
             var tPos = mousePosWorld - localPos;
             _prTransform.position = tPos;
-        } else {
+        }
+        else {
             // Posição será ajustada em relação ao MUNDO
-            var mousePosWorld = _camera.ScreenToWorldPoint(eventData.position);
+            var mousePos = Input.mousePosition;
+            var mousePosWorld = _camera.ScreenToWorldPoint(mousePos);
             mousePosWorld.z = transform.position.z;
             transform.position = mousePosWorld;
         }
+    }
+
+    public void OnPointerDown(PointerEventData eventData) {
+        print("DragBegin");
         grabStart();
     }
 
     private void OnMouseUp() {
         if (_isGrabbed) {
+            // Objeto é solto
             dropStart();
         }
     }
@@ -183,4 +198,5 @@ public class Grabber : MonoBehaviour, IDragHandler {
         var objectName = isRelative && _hasParent ? transform.parent.name : gameObject.name;
         print(objectName + " -> " + msg);
     }
+
 }

@@ -5,13 +5,23 @@ using UnityEngine;
 public class ItemGrabber : Grabber {
 
     private SpriteRenderer _sprRender;
+    private ItemCanvas _canvas;
+    /// <summary>
+    /// Se este Item estiver dentro de um objeto PARENT,
+    /// então esta referência deverá indicar o transform do objeto PAI,
+    /// caso contrário, deve indicar seu próprio transform.
+    /// </summary>
+    protected Transform _relativeTransform;
 
     protected override void Start() {
         base.Start();
         _sprRender = GetComponent<SpriteRenderer>();
+        _canvas = FindObjectOfType<ItemCanvas>();
+        _relativeTransform = transform;
     }
 
-    protected virtual void Update() {
+    protected override void Update() {
+        base.Update();
         if (Input.GetKeyDown(KeyCode.Space)) {
             print("Pressed Space key");
             StartCoroutine(Fade());
@@ -22,6 +32,14 @@ public class ItemGrabber : Grabber {
         base.onGrabHalfTargetScale();
         if (_sprRender != null) {
             _sprRender.sortingLayerName = "LayerItems";
+        }
+    }
+
+    public override void onDropStart() {
+        base.onDropStart();
+        if (_canvas != null) {
+            // No canvas de itens, este objeto acompanhará a camera
+            _relativeTransform.parent = _canvas.transform;
         }
     }
 
