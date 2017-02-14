@@ -30,6 +30,7 @@ public class ItemGrabber : Grabber {
         if (_sprRender) {
             _sprRender.sortingLayerName = "LayerSprites0";
         }
+        GameManager.instance.addCoins(1);
     }
 
     IEnumerator Fade() {

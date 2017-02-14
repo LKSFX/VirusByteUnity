@@ -2,15 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : GenericSingleton<GameManager> {
 
     private int _currentCoins;
-
-    public static GameManager instance;
-
-    private void Awake() {
-        instance = this;
-    }
 
     public void addCoins(int num) {
         _currentCoins += num;
