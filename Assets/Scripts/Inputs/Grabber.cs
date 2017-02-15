@@ -20,7 +20,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
 
     private GrabState _state = GrabState.STATIC;
 
-    private bool _isDebug = true;
+    public bool isDebug = false;
     private bool _hasParent;
     protected bool _isGrabbed;
 
@@ -164,33 +164,33 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
     // Métodos públicos implementáveis externamente
 
     public virtual void onGrabStart() {
-        if (_isDebug)
+        if (isDebug)
             log("grabStart");
     }
 
     public virtual void onGrabHalfTargetScale() {
-        if (_isDebug) {
+        if (isDebug) {
             log("growHalf");
         }
     }
 
     public virtual void onGrabTargetScale() {
-        if (_isDebug)
+        if (isDebug)
             log("growEnd");
     }
 
     public virtual void onDropStart() {
-        if (_isDebug)
+        if (isDebug)
             log("dropStart");
     }
 
     public virtual void onDropHalfTargetScale() {
-        if (_isDebug)
+        if (isDebug)
             log("dropHalf");
     }
 
     public virtual void onDropTargetScale() {
-        if (_isDebug)
+        if (isDebug)
             log("shrinkEnd");
     }
 
