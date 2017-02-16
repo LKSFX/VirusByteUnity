@@ -33,6 +33,7 @@ public class ItemGrabber : Grabber {
         if (_sprRender != null) {
             _sprRender.sortingLayerName = "LayerItems";
         }
+        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
     public override void onDropStart() {
@@ -49,6 +50,7 @@ public class ItemGrabber : Grabber {
             _sprRender.sortingLayerName = "LayerSprites0";
         }
         GameManager.instance.addCoins(1);
+        gameObject.layer = LayerMask.NameToLayer("Default");
     }
 
     IEnumerator Fade() {

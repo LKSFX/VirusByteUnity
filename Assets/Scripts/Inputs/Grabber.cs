@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 /// Isso evita problemas, no caso deste objeto onde o script se encontra estar animado. 
 /// Em geral, deve estar ligado a um sprite, algo visível.
 /// </summary>
-public class Grabber : MonoBehaviour, IPointerDownHandler {
+public class Grabber : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
     private Transform _prTransform; // parent transform
     private Vector3 _originalScale;
@@ -72,18 +72,31 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
         }
     }
 
+    public void OnBeginDrag(PointerEventData eventData) {
+    }
+
+    public void OnDrag(PointerEventData eventData) {
+    }
+
     public void OnPointerDown(PointerEventData eventData) {
         if (isDebug)
             print("DragBegin");
         grabStart();
+        //eventData.Use();
     }
 
-    private void OnMouseUp() {
-        if (_isGrabbed) {
-            // Objeto é solto
-            dropStart();
-        }
+    public void OnEndDrag(PointerEventData eventData) {
+        if (isDebug)
+            print("Drag END");
+        // Objeto é solto
+        dropStart();
     }
+
+    //private void OnMouseUp() {
+    //    if (_isGrabbed) {
+            
+    //    }
+    //}
 
     IEnumerator Grow() {
         bool reachedHalfScale = false;
@@ -131,7 +144,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
         return _state;
     }
 
-    // Métodos privados não implementáveis externamente
+    #region Métodos privados não implementáveis externamente
 
     private void grabStart() {
         if (!_isGrabbed) {
@@ -161,8 +174,9 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
         _state = GrabState.STATIC;
         onDropTargetScale(); // Chama método implementável quando a animação SHRINK tiver terminado
     }
+    #endregion
 
-    // Métodos públicos implementáveis externamente
+    #region Métodos públicos implementáveis externamente
 
     public virtual void onGrabStart() {
         if (isDebug)
@@ -194,6 +208,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
         if (isDebug)
             log("shrinkEnd");
     }
+    #endregion
 
     public void log(string msg) {
         var objectName = isRelative && _hasParent ? transform.parent.name : gameObject.name;
