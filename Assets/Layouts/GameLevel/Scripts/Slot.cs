@@ -6,22 +6,24 @@ using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IDropHandler {
 
-    private GameObject _item;
+    private List<GameObject> _itemList = new List<GameObject>();
     private int _quantity;
 
-    public void checkItemDrop(GameObject go) {
+    public void checkItemDrop(GameObject go, Item item) {
         print("CHECKING ITEM DROP");
         go.SetActive(false);
-        _item = go;
+        _itemList.Add(go);
+        var icon = Instantiate(item.icon, transform, false); // create Icon
     }
 
     public void OnDrop(PointerEventData eventData) {
         print("CHECKING ITEM DROP " + eventData.pointerDrag);
         GameObject go = eventData.pointerPress;
         if (go == null) return; // retorna se não tiver nada em mãos
-        ItemGrabber ig = go.GetComponent<ItemGrabber>();
-        if (ig != null) {
-            checkItemDrop(go);
+        Item item = go.GetComponent<Item>();
+        if (item != null) {
+            // Checa se o objeto é um ITEM
+            checkItemDrop(go, item);
         }
     }
 }
