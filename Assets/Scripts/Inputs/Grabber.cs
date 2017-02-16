@@ -73,7 +73,8 @@ public class Grabber : MonoBehaviour, IPointerDownHandler {
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        print("DragBegin");
+        if (isDebug)
+            print("DragBegin");
         grabStart();
     }
 

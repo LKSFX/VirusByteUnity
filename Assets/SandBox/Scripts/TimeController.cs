@@ -5,12 +5,12 @@ using UnityEngine;
 public class TimeController : MonoBehaviour {
 
     public void switchTimeScale() {
-        if (Time.timeScale == 1) {
-            Time.timeScale = 0;
+        GameManager gm = GameManager.instance;
+        gm.setGamePause(!gm.isGamePaused);
+        if (gm.isGamePaused) {
             GetComponentInChildren<UnityEngine.UI.Text>().text = "Play";
         }
         else {
-            Time.timeScale = 1;
             GetComponentInChildren<UnityEngine.UI.Text>().text = "Stop";
         }
     }
