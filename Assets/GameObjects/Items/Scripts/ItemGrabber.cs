@@ -8,6 +8,7 @@ public class ItemGrabber : Grabber {
     private SpriteRenderer _sprRender;
     private ItemCanvas _canvas;
     private Vector3 _onDropMousePos;
+    private Slot _slot;
     /// <summary>
     /// Se este Item estiver dentro de um objeto PARENT,
     /// então esta referência deverá indicar o transform do objeto PAI,
@@ -55,23 +56,40 @@ public class ItemGrabber : Grabber {
         checkDropForSlot();
     }
 
+    private void OnTriggerEnter2D(Collider2D collision) {
+        //print(gameObject.name + " Collided with " +collision.gameObject.name);
+        _slot = collision.gameObject.GetComponent<Slot>();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        //print(gameObject.name + " Collision exit " + collision.gameObject.name);
+        _slot = null;
+    }
+
     private void checkDropForSlot() {
-        PointerEventData pe = new PointerEventData(EventSystem.current);
-        pe.position = _onDropMousePos;
-        List<RaycastResult> hits = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pe, hits);
-        foreach (RaycastResult rr in hits) {
-            GameObject go = rr.gameObject;
-            Slot slot = go.GetComponent<Slot>();
-            if (slot != null) {
-                // Item dropado no slot
-                if (slot.checkItemDrop(gameObject)) {
-                    // Item agora no slot
-                    setMetaScale();
-                }
-                break;
+        print(_slot);
+        if (_slot != null) {
+            if (_slot.checkItemDrop(gameObject)) {
+                //Item está no slot agora
+                setMetaScale();
             }
         }
+        //PointerEventData pe = new PointerEventData(EventSystem.current);
+        //pe.position = _onDropMousePos;
+        //List<RaycastResult> hits = new List<RaycastResult>();
+        //EventSystem.current.RaycastAll(pe, hits);
+        //foreach (RaycastResult rr in hits) {
+        //    GameObject go = rr.gameObject;
+        //    Slot slot = go.GetComponent<Slot>();
+        //    if (slot != null) {
+        //        // Item dropado no slot
+        //        if (slot.checkItemDrop(gameObject)) {
+        //            // Item agora no slot
+        //            setMetaScale();
+        //        }
+        //        break;
+        //    }
+        //}
     }
 
     IEnumerator Fade() {

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// Quando o jogo está em pausa o item não pode ser pego.
+/// </summary>
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
     private List<Item> _itemList = new List<Item>();
@@ -34,7 +37,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void OnPointerDown(PointerEventData eventData) {
-        if (_itemList.Count > 0) {
+        if (_itemList.Count > 0) { 
             // Contém Item
             Item item = _itemList[0];
             _itemList.Remove(item);
@@ -48,7 +51,6 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        print("SLOT MOUSE UP");
         if (_currentDrag != null) {
             ExecuteEvents.Execute(_currentDrag, eventData, ExecuteEvents.pointerUpHandler);
             _currentDrag = null;

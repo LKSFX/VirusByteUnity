@@ -14,7 +14,7 @@ public class Virus : MonoBehaviour {
         detector.onLeftOut = onLeftOut;
         detector.onRightOut = onRight;
     }
-    
+
     #region Vírus sai da tela
     /// <summary>
     /// Sinal chamado pelo OffscreenDetector quando este objeto sai da tela.
