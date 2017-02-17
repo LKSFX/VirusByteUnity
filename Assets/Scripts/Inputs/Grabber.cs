@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 /// Isso evita problemas, no caso deste objeto onde o script se encontra estar animado. 
 /// Em geral, deve estar ligado a um sprite, algo visível.
 /// </summary>
-public class Grabber : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
     private Transform _prTransform; // parent transform
     private Vector3 _originalScale;
@@ -72,29 +72,21 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
         }
     }
 
-    public void OnBeginDrag(PointerEventData eventData) {
-    }
-
-    public void OnDrag(PointerEventData eventData) {
-    }
-
     public void OnPointerDown(PointerEventData eventData) {
         if (isDebug)
             print("DragBegin");
         grabStart();
-        //eventData.Use();
     }
 
-    public void OnEndDrag(PointerEventData eventData) {
+    public void OnPointerUp(PointerEventData eventData) {
         if (isDebug)
-            print("Drag END");
-        // Objeto é solto
+            print("DragEnd");
         dropStart();
     }
 
     //private void OnMouseUp() {
     //    if (_isGrabbed) {
-            
+    //        dropStart();
     //    }
     //}
 
@@ -114,6 +106,10 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
                 reachedHalfScale = true; // Este pedaço do código será chamado apenas uma vez durante o estado GROW
             }
             yield return null;
+        }
+        // Evita que o sinal de meia escala, que pode conter chamadas importantes, passe em branco
+        if (!reachedHalfScale) {
+            onGrabHalfTargetScale();
         }
         growEnd();
     }
@@ -138,11 +134,21 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, ID
         shrinkEnd();
     }
 
-    // GETS públicos
+    #region SET's públicos
+    public void setMetaScale() {
+        transform.localScale = _metaScale;
+    }
+    public void setOriginalScale() {
+        transform.localScale = _originalScale;
+    }
+    #endregion
+
+    #region GET's públicos
 
     public GrabState getGrabState() {
         return _state;
     }
+    #endregion
 
     #region Métodos privados não implementáveis externamente
 

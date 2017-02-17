@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ItemGrabber : Grabber {
 
     private SpriteRenderer _sprRender;
     private ItemCanvas _canvas;
+    private Vector3 _onDropMousePos;
     /// <summary>
     /// Se este Item estiver dentro de um objeto PARENT,
     /// então esta referência deverá indicar o transform do objeto PAI,
@@ -33,11 +35,11 @@ public class ItemGrabber : Grabber {
         if (_sprRender != null) {
             _sprRender.sortingLayerName = "LayerItems";
         }
-        gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
     public override void onDropStart() {
         base.onDropStart();
+        _onDropMousePos = Input.mousePosition;
         if (_canvas != null) {
             // No canvas de itens, este objeto acompanhará a camera
             _relativeTransform.parent = _canvas.transform;
@@ -50,7 +52,26 @@ public class ItemGrabber : Grabber {
             _sprRender.sortingLayerName = "LayerSprites0";
         }
         GameManager.instance.addCoins(1);
-        gameObject.layer = LayerMask.NameToLayer("Default");
+        checkDropForSlot();
+    }
+
+    private void checkDropForSlot() {
+        PointerEventData pe = new PointerEventData(EventSystem.current);
+        pe.position = _onDropMousePos;
+        List<RaycastResult> hits = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(pe, hits);
+        foreach (RaycastResult rr in hits) {
+            GameObject go = rr.gameObject;
+            Slot slot = go.GetComponent<Slot>();
+            if (slot != null) {
+                // Item dropado no slot
+                if (slot.checkItemDrop(gameObject)) {
+                    // Item agora no slot
+                    setMetaScale();
+                }
+                break;
+            }
+        }
     }
 
     IEnumerator Fade() {
@@ -65,4 +86,5 @@ public class ItemGrabber : Grabber {
 
         print("FadeEnd: " + _sprRender.color);
     }
+
 }
