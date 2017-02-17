@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4387879559248568}
   - component: {fileID: 212798883508121458}
   - component: {fileID: 61299966500147206}
-  - component: {fileID: 114551114558014380}
   - component: {fileID: 114346101028885124}
   m_Layer: 0
   m_Name: Bomb
@@ -68,23 +67,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ee9bf25c2eeb4f46872aab7f9d274c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  icon: {fileID: 1592431610612618, guid: f15ede2b00b916046b799844864eaaca, type: 2}
---- !u!114 &114551114558014380
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1920751075585808}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 088cda5d6237a094e970f5b4015f9ec5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   isDebug: 0
   isRelative: 0
   targetGrabScale: 1
   growDuration: 1
   shrinkDuration: 0.5
+  icon: {fileID: 1592431610612618, guid: f15ede2b00b916046b799844864eaaca, type: 2}
 --- !u!212 &212798883508121458
 SpriteRenderer:
   m_ObjectHideFlags: 1
