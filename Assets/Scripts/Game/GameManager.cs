@@ -18,6 +18,10 @@ public class GameManager : GenericSingleton<GameManager> {
     private float _gameTimeScale = 1;
     private bool _isGamePaused;
 
+    public delegate void Action();
+    private Action _onPause;
+    private Action _onUnpause;
+
     public void addCoins(int num) {
         _currentCoins += num;
     }
@@ -34,11 +38,35 @@ public class GameManager : GenericSingleton<GameManager> {
             _gameTimeScale = Time.timeScale;
             Time.timeScale = 0;
             Camera.main.GetComponent<Physics2DRaycaster>().eventMask = _rayMaskOnPause;
+            if (_onPause != null) {
+                _onPause();
+            }
         }
         else {
             // Jogo volta a escala de tempo anterior à pausa
             Time.timeScale = _gameTimeScale;
             Camera.main.GetComponent<Physics2DRaycaster>().eventMask = _rayMaskDefault;
+            if (_onUnpause != null) {
+                _onUnpause();
+            }
         }
     }
+
+    #region Adições e remoções de ações tomadas durante estado de pausa
+    public void addOnPauseAction(Action action) {
+        _onPause += action;
+    }
+
+    public void removeOnPauseAction(Action action) {
+        _onPause -= action;
+    }
+
+    public void addOnUnpauseAction(Action action) {
+        _onUnpause += action;
+    }
+
+    public void removeOnUpauseAction(Action action) {
+        _onUnpause -= action;
+    }
+    #endregion
 }

@@ -67,7 +67,6 @@ public class ItemGrabber : Grabber {
     }
 
     private void checkDropForSlot() {
-        print(_slot);
         if (_slot != null) {
             if (_slot.checkItemDrop(gameObject)) {
                 //Item está no slot agora

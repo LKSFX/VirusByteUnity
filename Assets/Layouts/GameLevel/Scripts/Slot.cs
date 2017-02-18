@@ -2,17 +2,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 /// <summary>
 /// Quando o jogo está em pausa o item não pode ser pego.
 /// </summary>
+[RequireComponent(typeof(Image))]
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+
+    public bool hasItem {
+        get { return _itemList.Count > 0; }
+    }
 
     private List<Item> _itemList = new List<Item>();
     private GameObject _icon;
     private GameObject _currentDrag;
-    private int _quantity;
+    private Image _image; // Slot sprite
+
+    private void Awake() {
+        _image = GetComponent<Image>();
+        updateState();
+    }
+
+    /// <summary>
+    /// Verifica se há algum Item neste Slot; torna-se ativo caso haja, do contrário torna-se inativo.
+    /// </summary>
+    private void updateState() {
+        bool active = hasItem; // ativo quando há itens
+        _image.raycastTarget = active;
+    }
 
     /// <summary>
     /// Retorna verdadeiro se o item foi inserido no slot com sucesso.
@@ -37,6 +56,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void OnPointerDown(PointerEventData eventData) {
+        print("Pointer down over Slot");
         if (_itemList.Count > 0) { 
             // Contém Item
             Item item = _itemList[0];
@@ -55,5 +75,18 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
             ExecuteEvents.Execute(_currentDrag, eventData, ExecuteEvents.pointerUpHandler);
             _currentDrag = null;
         }
+    }
+
+    GameManager.Action _onPause;
+    GameManager.Action _onUnpause;
+
+    private void OnEnable() {
+        GameManager.instance.addOnPauseAction(_onPause = () => { gameObject.layer = LayerMask.NameToLayer("Ignore Raycast"); });
+        GameManager.instance.addOnUnpauseAction(_onUnpause = () => { gameObject.layer = LayerMask.NameToLayer("UI"); });
+    }
+
+    private void OnDisable() {
+        GameManager.instance.removeOnPauseAction(_onPause);
+        GameManager.instance.removeOnUpauseAction(_onUnpause);
     }
 }
