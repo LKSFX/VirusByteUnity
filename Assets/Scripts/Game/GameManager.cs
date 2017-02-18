@@ -69,4 +69,5 @@ public class GameManager : GenericSingleton<GameManager> {
         _onUnpause -= action;
     }
     #endregion
+
 }

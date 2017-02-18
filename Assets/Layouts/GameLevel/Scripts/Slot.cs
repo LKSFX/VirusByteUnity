@@ -86,6 +86,8 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     private void OnDisable() {
+        if (GameManager.instance == null)
+            return; // Jovo já foi fechado e GameManager já foi destruido.
         GameManager.instance.removeOnPauseAction(_onPause);
         GameManager.instance.removeOnUpauseAction(_onUnpause);
     }
