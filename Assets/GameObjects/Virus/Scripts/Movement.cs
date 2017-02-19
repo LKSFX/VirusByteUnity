@@ -11,6 +11,9 @@ public class Movement : MonoBehaviour {
     public float speed;
     [Tooltip("Força este objeto a mover-se mesmo que não tenha recebido o sinal de liberação.")]
     public bool forceMove = false;
+    public bool isMoveAllowed {
+        get { return _isMoveAllowed; }
+    }
     protected bool _isMoveAllowed;
 
     /// <summary>

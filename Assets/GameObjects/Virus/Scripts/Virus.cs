@@ -5,7 +5,21 @@ using UnityEngine;
 [RequireComponent(typeof(OffscreenDetector))]
 public class Virus : MonoBehaviour {
     public bool isDebug = true;
+    #region Propriedades
+    public bool hasMoveController { // Retorna verdadeiro se este vírus tiver um controlador de movimento
+        get { return _movementController != null; }
+    }
+    public bool isMoveAllowed { 
+        //Retorna verdadeiro se este vírus tiver um controlador de movimento e estiver liberado para se mover
+        get { return hasMoveController && _movementController.isMoveAllowed; }
+    }
+    public bool isMoving {
+        // Retorna verdadeiro apenas quando o vírus tiver controlador de movimento, estiver liberado e tiver velocidade diferente de zero
+        get { return isMoveAllowed && _movementController.speed != 0; }
+    }
+    #endregion
 
+    protected Movement _movementController;
     protected virtual void Start() {
         OffscreenDetector detector = GetComponent<OffscreenDetector>();
         detector.onOut = onOffscreen;
@@ -13,6 +27,11 @@ public class Virus : MonoBehaviour {
         detector.onTopOut = onTopOut;
         detector.onLeftOut = onLeftOut;
         detector.onRightOut = onRight;
+    }
+
+    public void setMove(bool move) {
+        if (!hasMoveController) return; // não pode mover-se caso não haja controlador de movimento
+        _movementController.setMove(move);
     }
 
     #region Vírus sai da tela

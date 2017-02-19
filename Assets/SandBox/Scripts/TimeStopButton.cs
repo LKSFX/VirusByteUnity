@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeController : MonoBehaviour {
+public class TimeStopButton : MonoBehaviour {
 
     public void switchTimeScale() {
         GameManager gm = GameManager.instance;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraMove : MonoBehaviour {
+public class CameraLevel : MonoBehaviour {
     private bool _isMoveAllow = true;
     [Header("Velocidade da câmera.")]
     [Tooltip("Define a velocidade inicial da câmera.")]
@@ -21,4 +21,6 @@ public class CameraMove : MonoBehaviour {
             transform.position = transform.position + Vector3.up * speed * Time.deltaTime;
         }
 	}
+
+    void onMoveCheckPosition() { }
 }

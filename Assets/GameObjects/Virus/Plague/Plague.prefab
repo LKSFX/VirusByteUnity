@@ -21,6 +21,10 @@ GameObject:
   - component: {fileID: 4208552813010540}
   - component: {fileID: 212854765940768996}
   - component: {fileID: 95140359428944952}
+  - component: {fileID: 61858100276429122}
+  - component: {fileID: 114880149284595822}
+  - component: {fileID: 114103274599199688}
+  - component: {fileID: 114830510954590572}
   m_Layer: 0
   m_Name: Plague
   m_TagString: Untagged
@@ -35,12 +39,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1769234511348350}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.49, y: 1.15, z: 0}
+  m_LocalPosition: {x: 1.49, y: -1.498, z: 0}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61858100276429122
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769234511348350}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
 --- !u!95 &95140359428944952
 Animator:
   serializedVersion: 3
@@ -58,6 +76,44 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114103274599199688
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769234511348350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35cc81432ba7283408845add2a4b607a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114830510954590572
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769234511348350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fcf496caff0104ebcd9352ef98e220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDebug: 1
+--- !u!114 &114880149284595822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1769234511348350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d0ef1879bff8ac4a9c24205c3231ab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directionX: 0
+  directionY: 1
+  speed: 1
+  forceMove: 0
 --- !u!212 &212854765940768996
 SpriteRenderer:
   m_ObjectHideFlags: 1
