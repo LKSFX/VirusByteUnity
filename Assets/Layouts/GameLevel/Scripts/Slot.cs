@@ -52,11 +52,16 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         _itemList.Add(item);
         if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
             _icon = Instantiate(item.icon, transform, false); // cria e mostra Icone
+        updateState();
         return true;
     }
 
+    /// <summary>
+    /// Retira Item, quando não está vázio
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData) {
-        print("Pointer down over Slot");
+        //print("Pointer down over Slot");
         if (_itemList.Count > 0) { 
             // Contém Item
             Item item = _itemList[0];
@@ -67,6 +72,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
             _currentDrag = go;
             if (_itemList.Count == 0)
                 Destroy(_icon);
+            updateState();
         }
     }
 
