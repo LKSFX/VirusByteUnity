@@ -7,7 +7,6 @@ public class ItemGrabber : Grabber {
 
     private SpriteRenderer _sprRender;
     private ItemCanvas _canvas;
-    private Vector3 _onDropMousePos;
     private Slot _slot;
     /// <summary>
     /// Se este Item estiver dentro de um objeto PARENT,
@@ -40,7 +39,6 @@ public class ItemGrabber : Grabber {
 
     public override void onDropStart() {
         base.onDropStart();
-        _onDropMousePos = Input.mousePosition;
         if (_canvas != null) {
             // No canvas de itens, este objeto acompanhará a camera
             _relativeTransform.parent = _canvas.transform;
@@ -70,7 +68,7 @@ public class ItemGrabber : Grabber {
         if (_slot != null) {
             if (_slot.checkItemDrop(gameObject)) {
                 //Item está no slot agora
-                setMetaScale();
+                onSlotEnter();
             }
         }
         //PointerEventData pe = new PointerEventData(EventSystem.current);
@@ -91,6 +89,7 @@ public class ItemGrabber : Grabber {
         //}
     }
 
+    // TESTE
     IEnumerator Fade() {
         var c = _sprRender.color;
         var f = c.a;
@@ -103,5 +102,11 @@ public class ItemGrabber : Grabber {
 
         print("FadeEnd: " + _sprRender.color);
     }
+
+    #region Métodos implementáveis
+    public virtual void onSlotEnter() {
+        setMetaScale();
+    }
+    #endregion
 
 }
