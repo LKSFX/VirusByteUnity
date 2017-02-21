@@ -71,22 +71,6 @@ public class ItemGrabber : Grabber {
                 onSlotEnter();
             }
         }
-        //PointerEventData pe = new PointerEventData(EventSystem.current);
-        //pe.position = _onDropMousePos;
-        //List<RaycastResult> hits = new List<RaycastResult>();
-        //EventSystem.current.RaycastAll(pe, hits);
-        //foreach (RaycastResult rr in hits) {
-        //    GameObject go = rr.gameObject;
-        //    Slot slot = go.GetComponent<Slot>();
-        //    if (slot != null) {
-        //        // Item dropado no slot
-        //        if (slot.checkItemDrop(gameObject)) {
-        //            // Item agora no slot
-        //            setMetaScale();
-        //        }
-        //        break;
-        //    }
-        //}
     }
 
     // TESTE

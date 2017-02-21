@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 61858100276429122}
   - component: {fileID: 114880149284595822}
   - component: {fileID: 114103274599199688}
-  - component: {fileID: 114830510954590572}
+  - component: {fileID: 114241616481518196}
   m_Layer: 0
   m_Name: Plague
   m_TagString: Untagged
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35cc81432ba7283408845add2a4b607a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114830510954590572
+--- !u!114 &114241616481518196
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -95,10 +95,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1769234511348350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0fcf496caff0104ebcd9352ef98e220, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a6acffea111ce443a187fbd43e8ce33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDebug: 1
+  isDebug: 0
+  effectSmoke: {fileID: 1265396548600442, guid: 1f9a3b7d6a627a044bf71642e8f0bcbf,
+    type: 2}
+  effectHit: {fileID: 1686567761049230, guid: fb9da66e6ddf67840a5698bac9a209a5, type: 2}
 --- !u!114 &114880149284595822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -111,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   directionX: 0
-  directionY: 1
+  directionY: -1
   speed: 1
   forceMove: 0
 --- !u!212 &212854765940768996

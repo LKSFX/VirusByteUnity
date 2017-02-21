@@ -18,12 +18,28 @@ public class GameManager : GenericSingleton<GameManager> {
     private float _gameTimeScale = 1;
     private bool _isGamePaused;
 
+    private Dictionary<Item.ItemType, ItemLevel> _itemLevelList;
+
     public delegate void Action();
     private Action _onPause;
     private Action _onUnpause;
 
+    private void Awake() {
+        load();
+    }
+
     public void addCoins(int num) {
         _currentCoins += num;
+    }
+
+    private void load() {
+        loadItemLevelList();
+    }
+
+    private void loadItemLevelList() {
+        _itemLevelList = new Dictionary<Item.ItemType, ItemLevel>();
+        _itemLevelList.Add(Item.ItemType.BOMB, new ItemLevel(0));
+        _itemLevelList.Add(Item.ItemType.ANTIVIRUS, new ItemLevel(0));
     }
 
     /// <summary>
@@ -51,6 +67,12 @@ public class GameManager : GenericSingleton<GameManager> {
             }
         }
     }
+
+    #region Get's
+    public ItemLevel getItemLevel(Item.ItemType type) {
+        return _itemLevelList[type];
+    }
+    #endregion
 
     #region Adições e remoções de ações tomadas durante estado de pausa
     public void addOnPauseAction(Action action) {
