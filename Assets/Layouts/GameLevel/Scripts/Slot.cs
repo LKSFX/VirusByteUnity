@@ -41,7 +41,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     /// <returns></returns>
     public bool checkItemDrop(GameObject go) {
         if (go == null) return false; // não aceita objeto NULO
-        print(go + " dropped over slot.");
+        //print(go + " dropped over slot.");
         return insertItem(go.GetComponent<Item>(), go);
     }
 
@@ -49,6 +49,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         if (item == null) return false; // Objeto não é do tipo ITEM, retorna falso
         if (_itemList.Count > 0 && item.type != _itemList[0].type) return false; // Itens de tipos diferentes, retorna falso
         go.SetActive(false); // deixa objeto inativo, isto é, invisível na tela e sem receber inputs
+        item.transform.position = new Vector3(transform.position.x, transform.position.y, 0); // Ajusta posição de inércia
         _itemList.Add(item);
         if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
             _icon = Instantiate(item.icon, transform, false); // cria e mostra Icone

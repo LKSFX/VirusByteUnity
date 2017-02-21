@@ -7,7 +7,6 @@ public class ItemGrabber : Grabber {
 
     private SpriteRenderer _sprRender;
     private ItemCanvas _canvas;
-    private Slot _slot;
     /// <summary>
     /// Se este Item estiver dentro de um objeto PARENT,
     /// então esta referência deverá indicar o transform do objeto PAI,
@@ -54,19 +53,25 @@ public class ItemGrabber : Grabber {
         checkDropForSlot();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
-        //print(gameObject.name + " Collided with " +collision.gameObject.name);
-        _slot = collision.gameObject.GetComponent<Slot>();
-    }
+    //private void OnTriggerEnter2D(Collider2D collision) {
+    //    print(gameObject.name + " Collided with " + collision.gameObject.name);
+    //    _slot = collision.gameObject.GetComponent<Slot>();
+    //}
 
-    private void OnTriggerExit2D(Collider2D collision) {
-        //print(gameObject.name + " Collision exit " + collision.gameObject.name);
-        _slot = null;
-    }
+    //private void OnTriggerExit2D(Collider2D collision) {
+    //    print(gameObject.name + " Collision exit " + collision.gameObject.name);
+    //    _slot = null;
+    //}
 
     private void checkDropForSlot() {
-        if (_slot != null) {
-            if (_slot.checkItemDrop(gameObject)) {
+        Slot slot = null;
+        Collider2D[] collisionList = new Collider2D[3];
+        var total = Physics2D.OverlapBoxNonAlloc(new Vector2(transform.position.x, transform.position.y), new Vector2(1, 1), 0, collisionList);
+        for (int i = 0; i < total && slot == null; i++) {
+            slot = collisionList[i].gameObject.GetComponent<Slot>();
+        }
+        if (slot != null) {
+            if (slot.checkItemDrop(gameObject)) {
                 //Item está no slot agora
                 onSlotEnter();
             }
