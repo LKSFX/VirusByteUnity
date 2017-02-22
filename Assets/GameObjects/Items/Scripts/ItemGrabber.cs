@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class ItemGrabber : Grabber {
 
     private SpriteRenderer _sprRender;
-    private ItemCanvas _canvas;
+    private CameraFollower _canvas;
     /// <summary>
     /// Se este Item estiver dentro de um objeto PARENT,
     /// então esta referência deverá indicar o transform do objeto PAI,
@@ -17,7 +17,7 @@ public class ItemGrabber : Grabber {
     protected override void Start() {
         base.Start();
         _sprRender = GetComponent<SpriteRenderer>();
-        _canvas = FindObjectOfType<ItemCanvas>();
+        _canvas = FindObjectOfType<CameraFollower>();
         _relativeTransform = transform;
     }
 

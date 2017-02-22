@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemCanvas : MonoBehaviour {
+public class CameraFollower : MonoBehaviour {
 
     private Camera _camera;
 
