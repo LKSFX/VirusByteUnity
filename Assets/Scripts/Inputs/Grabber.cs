@@ -34,7 +34,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     [Range(0.1f, 1f)]
     public float shrinkDuration;
 
-    protected virtual void Start() {
+    protected virtual void Awake() {
         _prTransform = transform.parent;
         _hasParent = _prTransform != null;
         _camera = FindObjectOfType<Camera>();

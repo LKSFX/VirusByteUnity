@@ -15,8 +15,8 @@ public class Item : ItemGrabber {
         get { return _type; }
     }
 
-    protected override void Start() {
-        base.Start();
+    protected override void Awake() {
+        base.Awake();
         _anim = GetComponent<Animator>();
         _level = GameManager.instance.getItemLevel(_type);
     }

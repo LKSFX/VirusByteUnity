@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bomb : Item {
-    private void Awake() {
+
+    protected override void Awake() {
+        base.Awake();
         _type = ItemType.BOMB;
     }
 

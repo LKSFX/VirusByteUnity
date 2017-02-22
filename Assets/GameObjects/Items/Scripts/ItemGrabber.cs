@@ -16,8 +16,8 @@ public class ItemGrabber : Grabber {
     /// </summary>
     protected Transform _relativeTransform;
 
-    protected override void Start() {
-        base.Start();
+    protected override void Awake() {
+        base.Awake();
         _sprRender = GetComponent<SpriteRenderer>();
         _canvas = FindObjectOfType<CameraFollower>();
         _relativeTransform = transform;
