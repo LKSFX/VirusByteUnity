@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 /// <summary>
 /// Quando o jogo está em pausa o item não pode ser pego.
 /// </summary>
-[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Image), typeof(CanvasGroup))]
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
     public bool hasItem {
@@ -19,10 +19,14 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private GameObject _icon;
     private GameObject _currentDrag;
     private Image _image; // Slot sprite
+    private CanvasGroup _cGroup;
+    private Coroutine _fadeRoutine;
 
     private void Awake() {
         _image = GetComponent<Image>();
+        _cGroup = GetComponent<CanvasGroup>();
         updateState();
+        fadeOut();
     }
 
     /// <summary>
@@ -31,6 +35,14 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private void updateState() {
         bool active = hasItem; // ativo quando há itens
         _image.raycastTarget = active;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        fadeIn(1f);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) {
+        fadeOut(1f);
     }
 
     /// <summary>
@@ -54,6 +66,8 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
             _icon = Instantiate(item.icon, transform, false); // cria e mostra Icone
         updateState();
+        fadeIn(1f);
+        Invoke("fadeOut", 1f);
         return true;
     }
 
@@ -98,4 +112,39 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         GameManager.instance.removeOnPauseAction(_onPause);
         GameManager.instance.removeOnUpauseAction(_onUnpause);
     }
+
+    public void fadeIn() {
+        fadeIn(0.1f);
+    }
+
+    public void fadeIn(float step) {
+        if (_fadeRoutine != null)
+            StopCoroutine(_fadeRoutine);
+        _fadeRoutine = StartCoroutine(Fade(true, step));
+    }
+
+    public void fadeOut() {
+        fadeOut(0.1f);
+    }
+
+    public void fadeOut(float step) {
+        if (_fadeRoutine != null)
+            StopCoroutine(_fadeRoutine);
+        _fadeRoutine = StartCoroutine(Fade(false, step));
+    }
+
+    IEnumerator Fade(bool fadeIn, float step) {
+        step = Mathf.Abs(step);
+        int inOut = fadeIn ? 1 : -1;
+        var c = _cGroup.alpha;
+        float min = 0.3f, max = 1f;
+        while ((fadeIn && c <= max) || (c >= min)) {
+            c += inOut * step;
+            _cGroup.alpha = Mathf.Clamp(c, min, max);
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        print("FadeEnd: " + _cGroup.alpha);
+    }
+
 }
