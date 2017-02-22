@@ -11,6 +11,14 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image), typeof(CanvasGroup))]
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
+    public bool startWidthItem;
+    public Item.ItemType type;
+    public int quantity = 1;
+
+    private Dictionary<Item.ItemType, String> _prefabList = new Dictionary<Item.ItemType, String>() {
+        { Item.ItemType.BOMB, "Bomb"}
+    };
+
     public bool hasItem {
         get { return _itemList.Count > 0; }
     }
@@ -21,12 +29,28 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private Image _image; // Slot sprite
     private CanvasGroup _cGroup;
     private Coroutine _fadeRoutine;
+    float _minOpacity = 0.3f, _maxOpacity = 1f;
 
     private void Awake() {
         _image = GetComponent<Image>();
         _cGroup = GetComponent<CanvasGroup>();
         updateState();
         fadeOut();
+        debugItem();
+    }
+
+    private void debugItem() {
+        if (startWidthItem) {
+            GameObject prefab = Resources.Load(_prefabList[type]) as GameObject;
+            if (prefab != null) {
+                int total = Mathf.Abs(quantity);
+                GameObject go;
+                for (int i = 0; i < total; i++) {
+                    go = Instantiate(prefab);
+                    checkItemDrop(go);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -37,13 +61,13 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         _image.raycastTarget = active;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
-        fadeIn(1f);
-    }
+    //private void OnTriggerEnter2D(Collider2D collision) {
+    //    fadeIn(1f);
+    //}
 
-    private void OnTriggerExit2D(Collider2D collision) {
-        fadeOut(1f);
-    }
+    //private void OnTriggerExit2D(Collider2D collision) {
+    //    fadeOut(1f);
+    //}
 
     /// <summary>
     /// Retorna verdadeiro se o item foi inserido no slot com sucesso.
@@ -61,6 +85,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         if (item == null) return false; // Objeto não é do tipo ITEM, retorna falso
         if (_itemList.Count > 0 && item.type != _itemList[0].type) return false; // Itens de tipos diferentes, retorna falso
         go.SetActive(false); // deixa objeto inativo, isto é, invisível na tela e sem receber inputs
+        item.onSlotEnter(); // Deixa o item no tamanho máximo de drag
         item.transform.position = new Vector3(transform.position.x, transform.position.y, 0); // Ajusta posição de inércia
         _itemList.Add(item);
         if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
@@ -118,6 +143,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void fadeIn(float step) {
+        if (_cGroup.alpha >= _maxOpacity) return; // não é possível aumentar mais a opacidade
         if (_fadeRoutine != null)
             StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(Fade(true, step));
@@ -128,6 +154,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     public void fadeOut(float step) {
+        if (_cGroup.alpha <= _minOpacity) return; // não é possível diminuir mais a opacidade
         if (_fadeRoutine != null)
             StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(Fade(false, step));
@@ -137,14 +164,13 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         step = Mathf.Abs(step);
         int inOut = fadeIn ? 1 : -1;
         var c = _cGroup.alpha;
-        float min = 0.3f, max = 1f;
-        while ((fadeIn && c <= max) || (c >= min)) {
+        while ((fadeIn && c <= _maxOpacity) || (c >= _minOpacity)) {
             c += inOut * step;
-            _cGroup.alpha = Mathf.Clamp(c, min, max);
+            _cGroup.alpha = Mathf.Clamp(c, _minOpacity, _maxOpacity);
             yield return new WaitForSeconds(0.3f);
         }
 
-        print("FadeEnd: " + _cGroup.alpha);
+        //print("FadeEnd: " + _cGroup.alpha);
     }
 
 }

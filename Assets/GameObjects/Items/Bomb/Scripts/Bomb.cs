@@ -8,8 +8,8 @@ public class Bomb : Item {
     }
 
     public override void onDropStart() {
-        base.onDropStart();
         _anim.SetBool("Grabbing", false);
+        base.onDropStart();
     }
 
     public override void onDropHalfTargetScale() {

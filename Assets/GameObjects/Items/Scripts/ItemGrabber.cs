@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class ItemGrabber : Grabber {
 
+    
+    private Slot _slotHovered;
     private SpriteRenderer _sprRender;
     private CameraFollower _canvas;
     /// <summary>
@@ -26,6 +28,7 @@ public class ItemGrabber : Grabber {
         if (_sprRender != null) {
             _sprRender.sortingLayerName = "LayerItems";
         }
+        gameObject.layer = LayerMask.NameToLayer("UI");
     }
 
     public override void onDropStart() {
@@ -34,6 +37,7 @@ public class ItemGrabber : Grabber {
             // No canvas de itens, este objeto acompanhará a camera
             _relativeTransform.parent = _canvas.transform;
         }
+        checkDropForSlot();
     }
 
     public override void onDropHalfTargetScale() {
@@ -41,32 +45,34 @@ public class ItemGrabber : Grabber {
         if (_sprRender) {
             _sprRender.sortingLayerName = "LayerSprites0";
         }
+        gameObject.layer = LayerMask.NameToLayer("Default");
         GameManager.instance.addCoins(1);
-        checkDropForSlot();
+        
     }
 
-    //private void OnTriggerEnter2D(Collider2D collision) {
-    //    print(gameObject.name + " Collided with " + collision.gameObject.name);
-    //    _slot = collision.gameObject.GetComponent<Slot>();
-    //}
+    private void OnTriggerStay2D(Collider2D collision) {
+        //print("collision width: " + collision.gameObject);
+        Slot slot = collision.gameObject.GetComponent<Slot>();
+        if (slot != null) {
+            slot.fadeIn(1f);
+            if (_slotHovered != null && slot != _slotHovered)
+                _slotHovered.fadeOut(1f);
+        }
+        _slotHovered = slot;
+    }
 
-    //private void OnTriggerExit2D(Collider2D collision) {
-    //    print(gameObject.name + " Collision exit " + collision.gameObject.name);
-    //    _slot = null;
-    //}
+    private void OnTriggerExit2D(Collider2D collision) {
+        print(gameObject.name + " Collision exit " + collision.gameObject.name);
+        Slot slot = collision.gameObject.GetComponent<Slot>();
+        if (_slotHovered != null && _slotHovered == slot) {
+            _slotHovered.fadeOut(1f);
+            _slotHovered = null;
+        }
+    }
 
     private void checkDropForSlot() {
-        Slot slot = null;
-        Collider2D[] collisionList = new Collider2D[3];
-        var total = Physics2D.OverlapBoxNonAlloc(new Vector2(transform.position.x, transform.position.y), new Vector2(1, 1), 0, collisionList);
-        for (int i = 0; i < total && slot == null; i++) {
-            slot = collisionList[i].gameObject.GetComponent<Slot>();
-        }
-        if (slot != null) {
-            if (slot.checkItemDrop(gameObject)) {
-                //Item está no slot agora
-                onSlotEnter();
-            }
+        if (_slotHovered != null) {
+            _slotHovered.checkItemDrop(gameObject);
         }
     }
 
