@@ -11,7 +11,7 @@ public class TimeStopButton : MonoBehaviour {
             GetComponentInChildren<UnityEngine.UI.Text>().text = "Play";
         }
         else {
-            GetComponentInChildren<UnityEngine.UI.Text>().text = "Stop";
+            GetComponentInChildren<UnityEngine.UI.Text>().text = "Pause";
         }
     }
 
