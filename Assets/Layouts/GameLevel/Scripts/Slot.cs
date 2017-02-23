@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// Quando o jogo está em pausa o item não pode ser pego.
 /// </summary>
 [RequireComponent(typeof(Image), typeof(CanvasGroup))]
-public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
 
     [ReadOnlyWhenPlaying]
     public bool startWithItem;
@@ -17,6 +17,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public Item.ItemType type;
     [ReadOnlyWhenPlaying]
     public int quantity = 1;
+    public float timeToGrab = 0.5f;
 
     private Dictionary<Item.ItemType, String> _prefabList = new Dictionary<Item.ItemType, String>() {
         { Item.ItemType.BOMB, "Items/Bomb"}
@@ -32,7 +33,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private Image _image; // Slot sprite
     private CanvasGroup _cGroup;
     private CircleCollider2D _collider;
-    private Coroutine _fadeRoutine;
+    private Coroutine _fadeRoutine, _holdOverRoutine;
     float _minOpacity = 0.3f, _maxOpacity = 1f;
 
     private void Awake() {
@@ -101,13 +102,32 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         return true;
     }
 
+    #region Implementações do EVENTSYSTEMS
     /// <summary>
     /// Retira Item, quando não está vázio
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData) {
         //print("Pointer down over Slot");
-        if (_itemList.Count > 0) { 
+        _holdOverRoutine = StartCoroutine(HoldButtonTimer(eventData));
+    }
+
+    public void OnPointerUp(PointerEventData eventData) {
+        StopCoroutine(_holdOverRoutine);
+        if (_currentDrag != null) {
+            ExecuteEvents.Execute(_currentDrag, eventData, ExecuteEvents.pointerUpHandler);
+            _currentDrag = null;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        if (_holdOverRoutine != null)
+            StopCoroutine(_holdOverRoutine);
+    }
+    #endregion
+
+    public void grabItem(PointerEventData eventData) {
+        if (_itemList.Count > 0) {
             // Contém Item
             Item item = _itemList[0];
             _itemList.Remove(item);
@@ -122,13 +142,6 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData) {
-        if (_currentDrag != null) {
-            ExecuteEvents.Execute(_currentDrag, eventData, ExecuteEvents.pointerUpHandler);
-            _currentDrag = null;
-        }
-    }
-
     GameManager.Action _onPause;
     GameManager.Action _onUnpause;
 
@@ -138,7 +151,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     private void OnDisable() {
-        if (!GameManager.isApplicationQuitting)
+        if (GameManager.isApplicationQuitting)
             return; // Jovo está em processo de encerramento e GameManager já foi destruído.
         GameManager.instance.removeOnPauseAction(_onPause);
         GameManager.instance.removeOnUpauseAction(_onUnpause);
@@ -164,6 +177,18 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         if (_fadeRoutine != null)
             StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(Fade(false, step));
+    }
+
+    IEnumerator HoldButtonTimer(PointerEventData eventData) {
+        float waitTime = timeToGrab;
+        float time = Time.time;
+        float metaTime = time + waitTime;
+        while (time < metaTime) {
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        grabItem(eventData);
     }
 
     IEnumerator Fade(bool fadeIn, float step) {
