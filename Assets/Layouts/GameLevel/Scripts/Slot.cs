@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// Quando o jogo está em pausa o item não pode ser pego.
 /// </summary>
 [RequireComponent(typeof(Image), typeof(CanvasGroup))]
-public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler {
+public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IPointerExitHandler {
 
     [ReadOnlyWhenPlaying]
     public bool startWithItem;
@@ -17,7 +17,6 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     public Item.ItemType type;
     [ReadOnlyWhenPlaying]
     public int quantity = 1;
-    public float timeToGrab = 0.5f;
 
     private Dictionary<Item.ItemType, String> _prefabList = new Dictionary<Item.ItemType, String>() {
         { Item.ItemType.BOMB, "Items/Bomb"}
@@ -33,7 +32,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     private Image _image; // Slot sprite
     private CanvasGroup _cGroup;
     private CircleCollider2D _collider;
-    private Coroutine _fadeRoutine, _holdOverRoutine;
+    private Coroutine _fadeRoutine;
     float _minOpacity = 0.3f, _maxOpacity = 1f;
 
     private void Awake() {
@@ -109,20 +108,28 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData) {
         //print("Pointer down over Slot");
-        _holdOverRoutine = StartCoroutine(HoldButtonTimer(eventData));
+        if (hasItem)
+            Vibrator.vibrate(15);
+    }
+
+    public void OnBeginDrag(PointerEventData eventData) {
+        
+    }
+
+    public void OnDrag(PointerEventData eventData) {
+
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        if (eventData.dragging)
+            grabItem(eventData);
     }
 
     public void OnPointerUp(PointerEventData eventData) {
-        StopCoroutine(_holdOverRoutine);
         if (_currentDrag != null) {
             ExecuteEvents.Execute(_currentDrag, eventData, ExecuteEvents.pointerUpHandler);
             _currentDrag = null;
         }
-    }
-
-    public void OnPointerExit(PointerEventData eventData) {
-        if (_holdOverRoutine != null)
-            StopCoroutine(_holdOverRoutine);
     }
     #endregion
 
@@ -177,18 +184,6 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPoin
         if (_fadeRoutine != null)
             StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(Fade(false, step));
-    }
-
-    IEnumerator HoldButtonTimer(PointerEventData eventData) {
-        float waitTime = timeToGrab;
-        float time = Time.time;
-        float metaTime = time + waitTime;
-        while (time < metaTime) {
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        grabItem(eventData);
     }
 
     IEnumerator Fade(bool fadeIn, float step) {

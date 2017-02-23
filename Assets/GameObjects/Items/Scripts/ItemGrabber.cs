@@ -56,7 +56,7 @@ public class ItemGrabber : Grabber {
         if (slot != null) {
             slot.fadeIn(1f);
             if (_slotHovered != null && slot != _slotHovered)
-                _slotHovered.fadeOut(1f);
+                _slotHovered.fadeOut(.1f);
         }
         _slotHovered = slot;
     }
@@ -65,7 +65,7 @@ public class ItemGrabber : Grabber {
         print(gameObject.name + " Collision exit " + collision.gameObject.name);
         Slot slot = collision.gameObject.GetComponent<Slot>();
         if (_slotHovered != null && _slotHovered == slot) {
-            _slotHovered.fadeOut(1f);
+            _slotHovered.fadeOut(.1f);
             _slotHovered = null;
         }
     }
