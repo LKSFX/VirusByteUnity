@@ -26,7 +26,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     }
     #endregion
 
-    protected Movement _movementController;
+    protected MovementController _movementController;
     protected Animator _anim;
     protected bool _isHit;
     private bool _isAlive; // Vírus só causará danos quando cruzar o final da tela vivo
@@ -34,7 +34,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     protected virtual void Awake() {
         _anim = GetComponent<Animator>();
         _isAlive = true;
-        _movementController = GetComponent<Movement>();
+        _movementController = GetComponent<MovementController>();
         OffscreenDetector detector = GetComponent<OffscreenDetector>();
         detector.onOut = onOffscreen;
         detector.onBottomOut = onBottomOut;
@@ -43,12 +43,13 @@ public class Virus : MonoBehaviour, IExplosionDetector {
         detector.onRightOut = onRight;
     }
 
-
+    #region Efeitos tomados por contato com os efeitos dos itens
     public void onExplosionRange(ItemLevel level) {
         _anim.SetTrigger("roasted");
         onDefeated();
         Invoke("onRoastedDeath", 2f);
     }
+    #endregion
 
     public void onRoastedDeath() {
         if (effectSmoke != null)

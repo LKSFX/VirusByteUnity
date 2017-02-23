@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleMove : Movement {
+public class SimpleMove : MovementController {
 
     private void Update() {
         if (_isMoveAllowed || forceMove) {

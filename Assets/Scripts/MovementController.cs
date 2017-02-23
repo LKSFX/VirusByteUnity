@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Movement : MonoBehaviour {
+public class MovementController : MonoBehaviour, IOnCollisionMove {
 
     [Range(-1, 1)]
     public int directionX = 0;

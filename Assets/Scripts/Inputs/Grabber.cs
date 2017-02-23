@@ -16,6 +16,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private Vector3 _originalScale;
     private Vector3 _metaScale;
     private Vector3 _halfScale;
+    private Vector3 _mouseDeltaPos;
     protected Camera _camera;
 
     private GrabState _state = GrabState.STATIC;
@@ -57,7 +58,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
             // Posição será ajustada em relação ao objeto PAI
             var prPos = _prTransform.position; // posição do objeto pai
             var localPos = transform.localPosition; // posição local atual
-            var mousePos = Input.mousePosition;
+            var mousePos = _mouseDeltaPos;
             var mousePosWorld = _camera.ScreenToWorldPoint(mousePos); // posição do mouse em relação ao mundo
             localPos.z = 0;
             var tPos = mousePosWorld - localPos;
@@ -65,17 +66,19 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         }
         else {
             // Posição será ajustada em relação ao MUNDO
-            var mousePos = Input.mousePosition;
+            var mousePos = _mouseDeltaPos;
             var mousePosWorld = _camera.ScreenToWorldPoint(mousePos);
             mousePosWorld.z = transform.position.z;
             transform.position = mousePosWorld;
         }
+        _mouseDeltaPos = Input.mousePosition;
     }
 
     public void OnPointerDown(PointerEventData eventData) {
         if (isDebug)
             print("DragBegin");
         grabStart();
+        _mouseDeltaPos = Input.mousePosition;
     }
 
     public void OnPointerUp(PointerEventData eventData) {
