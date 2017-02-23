@@ -16,7 +16,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     public int quantity = 1;
 
     private Dictionary<Item.ItemType, String> _prefabList = new Dictionary<Item.ItemType, String>() {
-        { Item.ItemType.BOMB, "Bomb"}
+        { Item.ItemType.BOMB, "Items/Bomb"}
     };
 
     public bool hasItem {
