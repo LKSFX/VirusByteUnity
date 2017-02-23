@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image), typeof(CanvasGroup))]
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
-    public bool startWidthItem;
+    public bool startWithItem;
     public Item.ItemType type;
     public int quantity = 1;
 
@@ -42,7 +42,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     private void debugItem() {
-        if (startWidthItem) {
+        if (startWithItem) {
             GameObject prefab = Resources.Load(_prefabList[type]) as GameObject;
             if (prefab != null) {
                 int total = Mathf.Abs(quantity);
