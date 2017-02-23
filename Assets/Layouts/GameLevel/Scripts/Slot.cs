@@ -58,6 +58,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     /// </summary>
     private void updateState() {
         bool active = hasItem; // ativo quando há itens
+        _cGroup.blocksRaycasts = active;
         _image.raycastTarget = active;
     }
 

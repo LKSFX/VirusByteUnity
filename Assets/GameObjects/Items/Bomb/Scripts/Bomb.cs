@@ -32,6 +32,7 @@ public class Bomb : Item {
         spr.enabled = false;
         if (effectActive != null) {
             Instantiate(effectActive, transform.position, Quaternion.identity);
+            Vibrator.vibrate(new long[] { 20, 100, 50, 50, 20, 10, 20, 10 }, -1);
         }
     }
 

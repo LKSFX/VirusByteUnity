@@ -10,10 +10,11 @@ public class CameraLevel : MonoBehaviour {
     [Tooltip("Define a velocidade inicial da câmera.")]
     [Range(-10f,10f)]
     public float speed = 0;
+
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Awake () {
+        Vibrator.vibrate(new long[] { 20, 5 }, -1);
+    }
 	
 	// Update is called once per frame
 	void Update () {
