@@ -28,12 +28,14 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     private GameObject _currentDrag;
     private Image _image; // Slot sprite
     private CanvasGroup _cGroup;
+    private CircleCollider2D _collider;
     private Coroutine _fadeRoutine;
     float _minOpacity = 0.3f, _maxOpacity = 1f;
 
     private void Awake() {
         _image = GetComponent<Image>();
         _cGroup = GetComponent<CanvasGroup>();
+        _collider = GetComponent<CircleCollider2D>();
         updateState();
         fadeOut();
         debugItem();
@@ -58,17 +60,16 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     /// </summary>
     private void updateState() {
         bool active = hasItem; // ativo quando há itens
-        _cGroup.blocksRaycasts = active;
+        //_cGroup.blocksRaycasts = active;
         _image.raycastTarget = active;
+        // define tamanho do collider
+        if (active) {
+            // Quando este slot tiver algum Item terá também um raio de detecção de touch maior
+            _collider.radius = ((RectTransform)transform).rect.width / 3;
+        } else {
+            _collider.radius = ((RectTransform)transform).rect.width / 4;
+        }
     }
-
-    //private void OnTriggerEnter2D(Collider2D collision) {
-    //    fadeIn(1f);
-    //}
-
-    //private void OnTriggerExit2D(Collider2D collision) {
-    //    fadeOut(1f);
-    //}
 
     /// <summary>
     /// Retorna verdadeiro se o item foi inserido no slot com sucesso.
@@ -87,7 +88,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         if (_itemList.Count > 0 && item.type != _itemList[0].type) return false; // Itens de tipos diferentes, retorna falso
         go.SetActive(false); // deixa objeto inativo, isto é, invisível na tela e sem receber inputs
         item.onSlotEnter(); // Deixa o item no tamanho máximo de drag
-        item.transform.position = new Vector3(transform.position.x, transform.position.y, 0); // Ajusta posição de inércia
+        
         _itemList.Add(item);
         if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
             _icon = Instantiate(item.icon, transform, false); // cria e mostra Icone
@@ -109,6 +110,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
             _itemList.Remove(item);
             GameObject go = item.gameObject;
             go.SetActive(true);
+            go.transform.position = new Vector3(transform.position.x, transform.position.y, 0); // Ajusta posição de spawn
             ExecuteEvents.Execute(go, eventData, ExecuteEvents.pointerDownHandler);
             _currentDrag = go;
             if (_itemList.Count == 0)
