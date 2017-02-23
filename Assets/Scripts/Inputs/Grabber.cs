@@ -10,13 +10,14 @@ using UnityEngine.EventSystems;
 /// Isso evita problemas, no caso deste objeto onde o script se encontra estar animado. 
 /// Em geral, deve estar ligado a um sprite, algo visível.
 /// </summary>
-public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler, IEndDragHandler {
 
     private Transform _prTransform; // parent transform
     private Vector3 _originalScale;
     private Vector3 _metaScale;
     private Vector3 _halfScale;
     private Vector3 _mouseDeltaPos;
+    private Vector3 _pressDisplacement;
     protected Camera _camera;
 
     private GrabState _state = GrabState.STATIC;
@@ -48,17 +49,16 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
     protected virtual void Update() {
         if (_isGrabbed) {
-            positionUpdate();
+            positionUpdate(Input.mousePosition);
         }
     }
 
-    private void positionUpdate() {
+    private void positionUpdate(Vector3 mousePos) {
         // Arrasta objeto 
         if (isRelative && _hasParent) {
             // Posição será ajustada em relação ao objeto PAI
             var prPos = _prTransform.position; // posição do objeto pai
             var localPos = transform.localPosition; // posição local atual
-            var mousePos = _mouseDeltaPos;
             var mousePosWorld = _camera.ScreenToWorldPoint(mousePos); // posição do mouse em relação ao mundo
             localPos.z = 0;
             var tPos = mousePosWorld - localPos;
@@ -66,12 +66,19 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         }
         else {
             // Posição será ajustada em relação ao MUNDO
-            var mousePos = _mouseDeltaPos;
             var mousePosWorld = _camera.ScreenToWorldPoint(mousePos);
             mousePosWorld.z = transform.position.z;
-            transform.position = mousePosWorld;
+            transform.position = mousePosWorld - _pressDisplacement;
         }
-        _mouseDeltaPos = Input.mousePosition;
+        _mouseDeltaPos = mousePos;
+    }
+
+    public void OnDrag(PointerEventData eventData) {
+        //positionUpdate(eventData.position);
+    }
+
+    public void OnEndDrag(PointerEventData eventData) {
+        print("DragEnd");
     }
 
     public void OnPointerDown(PointerEventData eventData) {
@@ -79,6 +86,9 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
             print("DragBegin");
         grabStart();
         _mouseDeltaPos = Input.mousePosition;
+        var localPressPos = _camera.ScreenToWorldPoint(_mouseDeltaPos);
+        localPressPos.z = 0;
+        _pressDisplacement = localPressPos - transform.position;
     }
 
     public void OnPointerUp(PointerEventData eventData) {

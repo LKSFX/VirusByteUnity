@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bomb : Item {
 
+    private bool _allowDetonate = true;
+
     protected override void Awake() {
         base.Awake();
         _type = ItemType.BOMB;
@@ -15,8 +17,10 @@ public class Bomb : Item {
     }
 
     public override void onDropHalfTargetScale() {
-        Invoke("detonate", 0.5f);
-        Invoke("explode", 1);
+        if (_allowDetonate) {
+            Invoke("detonate", 0.5f);
+            Invoke("explode", 1);
+        }
         // chamado método base após invokes para no caso desse item ser inserido no slot
         // os mesmos invokes poderem ser cancelados pela função onSlotEnter
         base.onDropHalfTargetScale();
