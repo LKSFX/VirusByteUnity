@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GenericSingleton<T> : MonoBehaviour where T : Component {
-    private static T _instance;
-    private static object _lock = new object();
+    
+    public static bool isApplicationQuitting {
+        get { return _isApplicationQuitting; }
+    }
     public static T instance {
         get {
-            if (applicationIsQuitting) {
+            if (_isApplicationQuitting) {
                 Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
                     "' already destroyed on application quit." +
                     " Won't create again - returning null.");
@@ -47,7 +49,9 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component {
         }
     }
 
-    private static bool applicationIsQuitting = false;
+    private static T _instance;
+    private static object _lock = new object();
+    private static bool _isApplicationQuitting = false;
     /// <summary>
     /// When Unity quits, it destroys objects in a random order.
     /// In principle, a Singleton is only destroyed when application quits.
@@ -57,6 +61,6 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component {
     /// So, this was made to be sure we're not creating that buggy ghost object.
     /// </summary>
     public void OnDestroy() {
-        applicationIsQuitting = true;
+        _isApplicationQuitting = true;
     }
 }

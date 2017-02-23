@@ -11,8 +11,11 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Image), typeof(CanvasGroup))]
 public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
+    [ReadOnlyWhenPlaying]
     public bool startWithItem;
+    [ReadOnlyWhenPlaying]
     public Item.ItemType type;
+    [ReadOnlyWhenPlaying]
     public int quantity = 1;
 
     private Dictionary<Item.ItemType, String> _prefabList = new Dictionary<Item.ItemType, String>() {
@@ -135,8 +138,8 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
     }
 
     private void OnDisable() {
-        if (GameManager.instance == null)
-            return; // Jovo já foi fechado e GameManager já foi destruido.
+        if (!GameManager.isApplicationQuitting)
+            return; // Jovo está em processo de encerramento e GameManager já foi destruído.
         GameManager.instance.removeOnPauseAction(_onPause);
         GameManager.instance.removeOnUpauseAction(_onUnpause);
     }

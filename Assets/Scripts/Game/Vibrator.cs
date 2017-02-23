@@ -9,31 +9,35 @@ public static class Vibrator {
     public static AndroidJavaObject currentActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
     public static AndroidJavaObject vibrator = currentActivity.Call<AndroidJavaObject>("getSystemService", "vibrator");
 #else
-    public static AndroidJavaClass unityPlayer;
-    public static AndroidJavaObject currentActivity;
     public static AndroidJavaObject vibrator;
-#endif
+#endif 
 
     public static void vibrate() {
+#if UNITY_ANDROID || UNITY_IOS
         if (isAndroid())
             vibrator.Call("vibrate");
         else
             Handheld.Vibrate();
+#endif
     }
 
 
     public static void vibrate(long milliseconds) {
+#if UNITY_ANDROID || UNITY_IOS
         if (isAndroid())
             vibrator.Call("vibrate", milliseconds);
         else
             Handheld.Vibrate();
+#endif
     }
 
     public static void vibrate(long[] pattern, int repeat) {
+#if UNITY_ANDROID || UNITY_IOS
         if (isAndroid())
             vibrator.Call("vibrate", pattern, repeat);
         else
             Handheld.Vibrate();
+#endif
     }
 
     public static bool hasVibrator() {
@@ -41,8 +45,9 @@ public static class Vibrator {
     }
 
     public static void cancel() {
-        if (isAndroid())
+#if UNITY_ANDROID
             vibrator.Call("cancel");
+#endif
     }
 
     private static bool isAndroid() {
