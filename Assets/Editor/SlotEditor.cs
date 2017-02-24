@@ -20,7 +20,6 @@ public class SlotEditor : Editor {
     }
 
     private void OnEnable() {
-        Debug.Log(target.name + " enabled");
         startWithItem = serializedObject.FindProperty("startWithItem");
         type = serializedObject.FindProperty("type");
         quantity = serializedObject.FindProperty("quantity");

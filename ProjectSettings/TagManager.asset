@@ -50,7 +50,7 @@ TagManager:
   - name: LayerSprites1
     uniqueID: 1510135423
     locked: 0
-  - name: LayerHud
+  - name: LayerSlots
     uniqueID: 1866246053
     locked: 0
   - name: LayerItems
@@ -58,4 +58,7 @@ TagManager:
     locked: 0
   - name: LayerEffects
     uniqueID: 2571311687
+    locked: 0
+  - name: LayerHud
+    uniqueID: 1794388329
     locked: 0

@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 1c500525248ca0b4e9bf712a770b6fba
+timeCreated: 1487959411
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: ISL_XEN
+  fontNames:
+  - ISL_XEN
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
