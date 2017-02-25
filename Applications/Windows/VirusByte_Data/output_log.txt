@@ -19,7 +19,7 @@ Platform assembly: C:\Users\lksfx\OneDrive\Unity\VirusByte\Applications\Windows\
 Loading C:\Users\lksfx\OneDrive\Unity\VirusByte\Applications\Windows\VirusByte_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
 Platform assembly: C:\Users\lksfx\OneDrive\Unity\VirusByte\Applications\Windows\VirusByte_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading C:\Users\lksfx\OneDrive\Unity\VirusByte\Applications\Windows\VirusByte_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.231 seconds
+- Completed reload, in  0.462 seconds
 Platform assembly: C:\Users\lksfx\OneDrive\Unity\VirusByte\Applications\Windows\VirusByte_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\lksfx\OneDrive\Unity\VirusByte\Applications\Windows\VirusByte_Data\Managed\System.dll (this message is harmless)
 <RI> Initializing input.
@@ -27,40 +27,10 @@ XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 desktop: 1600x900 60Hz; virtual: 3040x900 at 0,0
 <RI> Initialized touch support.
-UnloadTime: 1.210442 ms
+UnloadTime: 1.352262 ms
 [Singleton] An instance of GameManager is needed in the scene, so '(singleton) GameManager (UnityEngine.GameObject)' was created with DontDestroyOnLoad.
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-DragEnd
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-UnityToast -> Level restarted!
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 10.898025 ms
-
-Unloading 8 unused Assets to reduce memory usage. Loaded Objects now: 884.
-Total: 2.009110 ms (FindLiveObjects: 0.188781 ms CreateObjectMapping: 0.057225 ms MarkObjects: 1.178408 ms  DeleteObjects: 0.583139 ms)
-
-Bomb(Clone) Collision exit Slot (2)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1078 -> priority: 1 
-[Singleton] Instance 'GameManager' already destroyed on application quit. Won't create again - returning null.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-[Singleton] Instance 'GameManager' already destroyed on application quit. Won't create again - returning null.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-[Singleton] Instance 'GameManager' already destroyed on application quit. Won't create again - returning null.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
+  Thread -> id: 2458 -> priority: 1 
