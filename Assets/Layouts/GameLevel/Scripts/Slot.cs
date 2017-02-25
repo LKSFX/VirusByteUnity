@@ -161,7 +161,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBegi
         if (GameManager.isApplicationQuitting)
             return; // Jovo está em processo de encerramento e GameManager já foi destruído.
         GameManager.instance.removeOnPauseAction(_onPause);
-        GameManager.instance.removeOnUpauseAction(_onUnpause);
+        GameManager.instance.removeOnUnpauseAction(_onUnpause);
     }
 
     public void fadeIn() {

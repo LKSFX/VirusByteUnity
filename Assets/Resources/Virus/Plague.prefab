@@ -101,7 +101,7 @@ MonoBehaviour:
   isDebug: 0
   effectSmoke: {fileID: 1265396548600442, guid: 1f9a3b7d6a627a044bf71642e8f0bcbf,
     type: 2}
-  effectHit: {fileID: 1686567761049230, guid: fb9da66e6ddf67840a5698bac9a209a5, type: 2}
+  effectHit: {fileID: 1506416361541210, guid: d6dce2f7b94e7284995cacee471c2873, type: 2}
 --- !u!114 &114880149284595822
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -65,7 +65,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
         setMove(false);
     }
 
-    #region Animation Events
+    #region On Animation Events
     /// <summary>
     /// Chamado ao final da animação HURT
     /// </summary>

@@ -87,7 +87,7 @@ public class GameManager : GenericSingleton<GameManager> {
         _onUnpause += action;
     }
 
-    public void removeOnUpauseAction(Action action) {
+    public void removeOnUnpauseAction(Action action) {
         _onUnpause -= action;
     }
     #endregion

@@ -2,17 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeStopButton : MonoBehaviour {
+public class TimeStopButton : MonoBehaviour, IPauseAction {
 
     public void switchTimeScale() {
         GameManager gm = GameManager.instance;
         gm.setGamePause(!gm.isGamePaused);
-        if (gm.isGamePaused) {
-            GetComponentInChildren<UnityEngine.UI.Text>().text = "Play";
-        }
-        else {
-            GetComponentInChildren<UnityEngine.UI.Text>().text = "Pause";
+    }
+
+    private void OnEnable() {
+        GameManager.instance.addOnPauseAction(onPause);
+        GameManager.instance.addOnUnpauseAction(onUnpause);
+    }
+
+    private void OnDisable() {
+        if (!GameManager.isApplicationQuitting) {
+            GameManager.instance.removeOnPauseAction(onPause);
+            GameManager.instance.removeOnUnpauseAction(onUnpause);
         }
     }
 
+    public void onPause() {
+        gameObject.GetComponentInChildren<UnityEngine.UI.Text>().text = "Play";
+    }
+
+    public void onUnpause() {
+        gameObject.GetComponentInChildren<UnityEngine.UI.Text>().text = "Pause";
+    }
 }
