@@ -18,11 +18,8 @@ public class GameManager : GenericSingleton<GameManager> {
     private float _gameTimeScale = 1;
     private bool _isGamePaused;
 
+    private List<IPauseAction> pauseActionList = new List<IPauseAction>();
     private Dictionary<Item.ItemType, ItemLevel> _itemLevelList;
-
-    public delegate void Action();
-    private Action _onPause;
-    private Action _onUnpause;
 
     private void Awake() {
         load();
@@ -54,16 +51,20 @@ public class GameManager : GenericSingleton<GameManager> {
             _gameTimeScale = Time.timeScale;
             Time.timeScale = 0;
             Camera.main.GetComponent<Physics2DRaycaster>().eventMask = _rayMaskOnPause;
-            if (_onPause != null) {
-                _onPause();
+            if (pauseActionList.Count > 0) {
+                foreach (var action in pauseActionList) {
+                    action.onPause();
+                }
             }
         }
         else {
             // Jogo volta a escala de tempo anterior à pausa
             Time.timeScale = _gameTimeScale;
             Camera.main.GetComponent<Physics2DRaycaster>().eventMask = _rayMaskDefault;
-            if (_onUnpause != null) {
-                _onUnpause();
+            if (pauseActionList.Count > 0) {
+                foreach (var action in pauseActionList) {
+                    action.onUnpause();
+                }
             }
         }
     }
@@ -75,21 +76,15 @@ public class GameManager : GenericSingleton<GameManager> {
     #endregion
 
     #region Adições e remoções de ações tomadas durante estado de pausa
-    public void addOnPauseAction(Action action) {
-        _onPause += action;
+    public void addOnPauseAction(IPauseAction pauseAction) {
+        if (pauseAction == null) return;// não aceita valor NULO
+        pauseActionList.Add(pauseAction);
     }
 
-    public void removeOnPauseAction(Action action) {
-        _onPause -= action;
+    public void removeOnPauseAction(IPauseAction pauseAction) {
+        pauseActionList.Remove(pauseAction);
     }
 
-    public void addOnUnpauseAction(Action action) {
-        _onUnpause += action;
-    }
-
-    public void removeOnUnpauseAction(Action action) {
-        _onUnpause -= action;
-    }
     #endregion
 
 }

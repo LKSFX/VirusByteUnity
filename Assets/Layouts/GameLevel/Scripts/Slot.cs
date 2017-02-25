@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 /// Quando o jogo está em pausa o item não pode ser pego.
 /// </summary>
 [RequireComponent(typeof(Image), typeof(CanvasGroup))]
-public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IPointerExitHandler {
+public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IPointerExitHandler {
 
     [ReadOnlyWhenPlaying]
     public bool startWithItem;
@@ -69,7 +69,8 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBegi
         if (active) {
             // Quando este slot tiver algum Item terá também um raio de detecção de touch maior
             _collider.radius = ((RectTransform)transform).rect.width / 3;
-        } else {
+        }
+        else {
             _collider.radius = ((RectTransform)transform).rect.width / 4;
         }
     }
@@ -91,7 +92,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBegi
         if (_itemList.Count > 0 && item.type != _itemList[0].type) return false; // Itens de tipos diferentes, retorna falso
         go.SetActive(false); // deixa objeto inativo, isto é, invisível na tela e sem receber inputs
         item.onSlotEnter(); // Deixa o item no tamanho máximo de drag
-        
+
         _itemList.Add(item);
         if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
             _icon = Instantiate(item.icon, transform, false); // cria e mostra Icone
@@ -113,7 +114,7 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBegi
     }
 
     public void OnBeginDrag(PointerEventData eventData) {
-        
+
     }
 
     public void OnDrag(PointerEventData eventData) {
@@ -149,19 +150,22 @@ public class Slot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBegi
         }
     }
 
-    GameManager.Action _onPause;
-    GameManager.Action _onUnpause;
-
     private void OnEnable() {
-        GameManager.instance.addOnPauseAction(_onPause = () => { gameObject.layer = LayerMask.NameToLayer("Ignore Raycast"); });
-        GameManager.instance.addOnUnpauseAction(_onUnpause = () => { gameObject.layer = LayerMask.NameToLayer("UI"); });
+        GameManager.instance.addOnPauseAction(this);
     }
 
     private void OnDisable() {
         if (GameManager.isApplicationQuitting)
             return; // Jovo está em processo de encerramento e GameManager já foi destruído.
-        GameManager.instance.removeOnPauseAction(_onPause);
-        GameManager.instance.removeOnUnpauseAction(_onUnpause);
+        GameManager.instance.removeOnPauseAction(this);
+    }
+
+    public void onPause() {
+        LayerMask.NameToLayer("Ignore Raycast");
+    }
+
+    public void onUnpause() {
+        LayerMask.NameToLayer("UI");
     }
 
     public void fadeIn() {

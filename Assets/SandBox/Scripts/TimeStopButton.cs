@@ -10,14 +10,12 @@ public class TimeStopButton : MonoBehaviour, IPauseAction {
     }
 
     private void OnEnable() {
-        GameManager.instance.addOnPauseAction(onPause);
-        GameManager.instance.addOnUnpauseAction(onUnpause);
+        GameManager.instance.addOnPauseAction(this);
     }
 
     private void OnDisable() {
         if (!GameManager.isApplicationQuitting) {
-            GameManager.instance.removeOnPauseAction(onPause);
-            GameManager.instance.removeOnUnpauseAction(onUnpause);
+            GameManager.instance.removeOnPauseAction(this);
         }
     }
 
