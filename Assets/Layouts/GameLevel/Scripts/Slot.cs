@@ -94,8 +94,13 @@ public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUp
         item.onSlotEnter(); // Deixa o item no tamanho máximo de drag
 
         _itemList.Add(item);
-        if (_itemList.Count == 1) // Só adiciona o icone quando o slot estiver previamente vázio
+        if (_itemList.Count == 1) {// Só adiciona o icone quando o slot estiver previamente vázio
             _icon = Instantiate(item.icon, transform, false); // cria e mostra Icone
+            Animator anim = _icon.GetComponent<Animator>();
+            if (anim != null) {
+                anim.SetFloat("speed", 0); // quando o slot estiver no level, item não é animado.
+            }
+        }
         updateState();
         fadeIn(1f);
         Invoke("fadeOut", 1f);
