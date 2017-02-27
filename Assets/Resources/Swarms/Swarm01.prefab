@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4296700864893660}
   - component: {fileID: 212756632961670570}
   - component: {fileID: 114987297741500310}
+  - component: {fileID: 61958587738898384}
   m_Layer: 0
   m_Name: walking-plague0 (2)
   m_TagString: Untagged
@@ -36,6 +37,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4391276715882400}
+  - component: {fileID: 114433147687098610}
   m_Layer: 0
   m_Name: Swarm01
   m_TagString: Untagged
@@ -53,6 +55,7 @@ GameObject:
   - component: {fileID: 4227077870154126}
   - component: {fileID: 212345935407140794}
   - component: {fileID: 114608090429014228}
+  - component: {fileID: 61257192831973666}
   m_Layer: 0
   m_Name: walking-plague0
   m_TagString: Untagged
@@ -70,6 +73,7 @@ GameObject:
   - component: {fileID: 4986051152893138}
   - component: {fileID: 212518647166259412}
   - component: {fileID: 114970926130548200}
+  - component: {fileID: 61760730413305982}
   m_Layer: 0
   m_Name: walking-plague0 (1)
   m_TagString: Untagged
@@ -110,7 +114,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1132818540114400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4, y: 0.32, z: -6.2421875}
+  m_LocalPosition: {x: 2.46, y: 6.03, z: -6.2421875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4227077870154126}
@@ -132,6 +136,60 @@ Transform:
   m_Father: {fileID: 4391276715882400}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61257192831973666
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1340110569643182}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+--- !u!61 &61760730413305982
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1787728728518276}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: -0.00000011920929, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+--- !u!61 &61958587738898384
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1123297219974806}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0.00000011920929, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+--- !u!114 &114433147687098610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1132818540114400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 798a7810a85e3be47870ee8e40a4499d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swarmSpeedFactor: 1
 --- !u!114 &114608090429014228
 MonoBehaviour:
   m_ObjectHideFlags: 1

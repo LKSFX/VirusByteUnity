@@ -82,4 +82,11 @@ public class ItemGrabber : Grabber {
     }
     #endregion
 
+    private void OnEnable() {
+        gameObject.hideFlags = HideFlags.None;
+    }
+
+    private void OnDisable() {
+        gameObject.hideFlags = HideFlags.HideInHierarchy;
+    }
 }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4189252612099464}
   - component: {fileID: 212568693447667560}
   - component: {fileID: 114431046829507530}
+  - component: {fileID: 61787105883728780}
   m_Layer: 0
   m_Name: walking-plague0 (2)
   m_TagString: Untagged
@@ -38,6 +39,7 @@ GameObject:
   - component: {fileID: 4519106132847300}
   - component: {fileID: 212352989063279778}
   - component: {fileID: 114701765520766744}
+  - component: {fileID: 61738396719058608}
   m_Layer: 0
   m_Name: walking-plague0 (1)
   m_TagString: Untagged
@@ -55,6 +57,7 @@ GameObject:
   - component: {fileID: 4945298878257380}
   - component: {fileID: 212454798674718522}
   - component: {fileID: 114975239904905790}
+  - component: {fileID: 61896853184419400}
   m_Layer: 0
   m_Name: walking-plague0
   m_TagString: Untagged
@@ -70,6 +73,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4291096772944822}
+  - component: {fileID: 114881477911245698}
   m_Layer: 0
   m_Name: Swarm02
   m_TagString: Untagged
@@ -132,6 +136,48 @@ Transform:
   m_Father: {fileID: 4291096772944822}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61738396719058608
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1437546481712158}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: -0.00000011920929, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+--- !u!61 &61787105883728780
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1267582174667654}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
+--- !u!61 &61896853184419400
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1673570705428866}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0.000000029802322, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.32, y: 0.32}
 --- !u!114 &114431046829507530
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -158,6 +204,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instance: {fileID: 114241616481518196, guid: 59446029ac11fd341b47ea285d9d7811, type: 2}
   speed: 0.5
+--- !u!114 &114881477911245698
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1802019587092260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 798a7810a85e3be47870ee8e40a4499d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swarmSpeedFactor: 1
 --- !u!114 &114975239904905790
 MonoBehaviour:
   m_ObjectHideFlags: 1
