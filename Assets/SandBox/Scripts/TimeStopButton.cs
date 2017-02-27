@@ -11,6 +11,12 @@ public class TimeStopButton : MonoBehaviour, IPauseAction {
 
     private void OnEnable() {
         GameManager.instance.addOnPauseAction(this);
+        GameObject pauseMenu = GameObject.FindGameObjectWithTag("Pause");
+        if (pauseMenu != null) {
+            if (pauseMenu.gameObject.activeInHierarchy) {
+                GameManager.instance.setGamePause(true);
+            }
+        }
     }
 
     private void OnDisable() {
