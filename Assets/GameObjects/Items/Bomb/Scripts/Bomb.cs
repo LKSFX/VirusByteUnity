@@ -20,6 +20,7 @@ public class Bomb : Item {
         if (_allowDetonate) {
             Invoke("detonate", 0.5f);
             Invoke("explode", 1);
+            setAllowGrab(false);
         }
         // chamado método base após invokes para no caso desse item ser inserido no slot
         // os mesmos invokes poderem ser cancelados pela função onSlotEnter

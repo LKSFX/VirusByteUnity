@@ -17,20 +17,14 @@ public class Spawner : MonoBehaviour, ISpawner, IOnCollisionMove {
     /// </summary>
     /// <param name="move"></param>
     public void setMove(bool move) {
-        Transform swarm = transform.parent;
-        ISpawner spawner;
-        IOnCollisionMove moveController;
-        foreach (Transform go in swarm) { // Itera por todos os vírus contidos neste SWARM liberando um de cada vez
-            spawner = go.GetComponent<ISpawner>();
-            moveController = go.GetComponent<IOnCollisionMove>();
-            if (spawner != null)
-                spawner.spawn();
-        }
-        Destroy(swarm.gameObject); // Spawner swarm não é mais necessário após liberar os vírus
+        Transform parent = transform.parent;
+        Swarm swarm = parent.GetComponent<Swarm>();
+        if (swarm != null)
+            swarm.spawn();
     }
 
     public virtual void spawn() {
-        
+        Destroy(gameObject); // Spawner swarm não é mais necessário após liberar os vírus
     }
 
 }

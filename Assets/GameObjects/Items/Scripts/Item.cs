@@ -19,6 +19,7 @@ public class Item : ItemGrabber {
         base.Awake();
         _anim = GetComponent<Animator>();
         _level = GameManager.instance.getItemLevel(_type);
+        setAllowGrab(true);
     }
 
     public override void onGrabStart() {

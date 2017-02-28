@@ -68,11 +68,13 @@ public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUp
         // define tamanho do collider
         if (active) {
             // Quando este slot tiver algum Item terá também um raio de detecção de touch maior
-            _collider.radius = ((RectTransform)transform).rect.width / 3;
+            _collider.radius = 33.4f;
         }
         else {
-            _collider.radius = ((RectTransform)transform).rect.width / 4;
+            _collider.radius = 25f;
         }
+
+        print(gameObject.name + " -> COLLIDER Radius: " + _collider.radius);
     }
 
     /// <summary>

@@ -23,6 +23,7 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     private GrabState _state = GrabState.STATIC;
 
     public bool isDebug = false;
+    private bool _allowGrab;
     private bool _hasParent;
     protected bool _isGrabbed;
 
@@ -78,10 +79,10 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     }
 
     public void OnEndDrag(PointerEventData eventData) {
-        print("DragEnd");
     }
 
     public void OnPointerDown(PointerEventData eventData) {
+        if (!_allowGrab) return; // não pode agarrar
         if (isDebug)
             print("DragBegin");
         grabStart();
@@ -94,7 +95,8 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     public void OnPointerUp(PointerEventData eventData) {
         if (isDebug)
             print("DragEnd");
-        dropStart();
+        if (_isGrabbed)
+            dropStart();
     }
 
     //private void OnMouseUp() {
@@ -153,6 +155,9 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     }
     public void setOriginalScale() {
         transform.localScale = _originalScale;
+    }
+    public void setAllowGrab(bool allow) {
+        _allowGrab = allow;
     }
     #endregion
 
