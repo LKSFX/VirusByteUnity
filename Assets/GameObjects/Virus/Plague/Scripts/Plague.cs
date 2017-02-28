@@ -8,6 +8,7 @@ public class Plague : Virus, IPointerClickHandler {
     // Use this for initialization
     protected override void Awake() {
         base.Awake();
+        gameObject.AddComponent<ColliderDraw>();
 	}
 
     public void OnPointerClick(PointerEventData eventData) {

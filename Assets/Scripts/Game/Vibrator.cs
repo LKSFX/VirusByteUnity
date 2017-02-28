@@ -16,7 +16,7 @@ public static class Vibrator {
 #if UNITY_ANDROID || UNITY_IOS
         if (isAndroid())
             vibrator.Call("vibrate");
-        else
+        else if (!Application.isEditor)
             Handheld.Vibrate();
 #endif
     }
@@ -26,7 +26,7 @@ public static class Vibrator {
 #if UNITY_ANDROID || UNITY_IOS
         if (isAndroid())
             vibrator.Call("vibrate", milliseconds);
-        else
+        else if (!Application.isEditor)
             Handheld.Vibrate();
 #endif
     }
@@ -35,7 +35,7 @@ public static class Vibrator {
 #if UNITY_ANDROID || UNITY_IOS
         if (isAndroid())
             vibrator.Call("vibrate", pattern, repeat);
-        else
+        else if (!Application.isEditor)
             Handheld.Vibrate();
 #endif
     }
@@ -54,7 +54,7 @@ public static class Vibrator {
 #if UNITY_ANDROID && !UNITY_EDITOR
 	return true;
 #else
-    return false;
+        return false;
 #endif
     }
 }
