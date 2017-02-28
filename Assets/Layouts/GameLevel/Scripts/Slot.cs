@@ -73,7 +73,7 @@ public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUp
         else {
             _collider.radius = 25f;
         }
-
+        print(gameObject.name + " -> Rect: " + ((RectTransform)transform).rect);
         print(gameObject.name + " -> COLLIDER Radius: " + _collider.radius);
     }
 
