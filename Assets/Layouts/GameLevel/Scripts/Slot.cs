@@ -26,6 +26,7 @@ public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUp
         get { return _itemList.Count > 0; }
     }
 
+    private bool _debugCollisor;
     private List<Item> _itemList = new List<Item>();
     private GameObject _icon;
     private GameObject _currentDrag;
@@ -39,7 +40,8 @@ public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUp
         _image = GetComponent<Image>();
         _cGroup = GetComponent<CanvasGroup>();
         _collider = GetComponent<CircleCollider2D>();
-        gameObject.AddComponent<ColliderDraw>(); // depuração, desenha o collider
+        if (_debugCollisor)
+            gameObject.AddComponent<ColliderDraw>(); // depuração, desenha o collider
         updateState();
         fadeOut();
         debugItem();

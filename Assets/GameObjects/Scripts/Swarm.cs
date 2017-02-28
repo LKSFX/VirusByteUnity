@@ -5,6 +5,7 @@ using UnityEngine;
 public class Swarm : MonoBehaviour, ISpawner {
 
     public float swarmSpeedFactor = 1;
+
     private bool completed;
 
     public void spawn() {
@@ -20,11 +21,11 @@ public class Swarm : MonoBehaviour, ISpawner {
 
         // spawn childs
         ISpawner spawner;
-        IOnCollisionMove moveController;
         foreach (Transform go in transform) { // Itera por todos os vírus contidos neste SWARM liberando um de cada vez
             spawner = go.GetComponent<ISpawner>();
             if (spawner != null)
                 spawner.spawn();
         }
+        Destroy(gameObject); // absoleto após spawning
     }
 }
