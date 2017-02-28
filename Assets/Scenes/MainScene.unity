@@ -8103,7 +8103,7 @@ Prefab:
     - target: {fileID: 114931635272059982, guid: ca4733c66c0fe1f4594a0932d5c26f06,
         type: 2}
       propertyPath: startWithItem
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114931635272059982, guid: ca4733c66c0fe1f4594a0932d5c26f06,
         type: 2}

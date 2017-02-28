@@ -27,6 +27,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     #endregion
 
     protected MovementController _movementController;
+    protected SpriteRenderer _render;
     protected Animator _anim;
     protected bool _isHit;
     private bool _isAlive; // Vírus só causará danos quando cruzar o final da tela vivo
@@ -35,6 +36,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
         _anim = GetComponent<Animator>();
         _isAlive = true;
         _movementController = GetComponent<MovementController>();
+        _render = GetComponent<SpriteRenderer>();
         OffscreenDetector detector = GetComponent<OffscreenDetector>();
         detector.onOut = onOffscreen;
         detector.onBottomOut = onBottomOut;
@@ -62,6 +64,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     /// </summary>
     public virtual void onDefeated() {
         _isAlive = false;
+        _render.sortingOrder = -10;
         setMove(false);
     }
 
