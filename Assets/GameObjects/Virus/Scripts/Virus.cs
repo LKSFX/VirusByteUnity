@@ -8,6 +8,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     public bool isDebug = false;
     public GameObject effectSmoke; // Efeito para quando morrer carbonizado
     public GameObject effectHit; // Efeito para quando sofrer hit
+    public GameObject effectExplode; 
 
     #region Propriedades
     public bool hasMoveController { // Retorna verdadeiro se este vírus tiver um controlador de movimento
@@ -46,15 +47,21 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     }
 
     #region Efeitos tomados por contato com os efeitos dos itens
+    /// <summary>
+    /// Destruído por explosão de item bomba
+    /// </summary>
+    /// <param name="level"></param>
     public void onExplosionRange(ItemLevel level) {
         _anim.SetTrigger("roasted");
         onDefeated();
+        if (effectExplode != null) // instancia efeito de transição, dano por explosão
+            Instantiate(effectExplode, transform.position, Quaternion.identity);
         Invoke("onRoastedDeath", 2f);
     }
     #endregion
 
     public void onRoastedDeath() {
-        if (effectSmoke != null)
+        if (effectSmoke != null) // instancia efeito de fumaça
             Instantiate(effectSmoke, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }

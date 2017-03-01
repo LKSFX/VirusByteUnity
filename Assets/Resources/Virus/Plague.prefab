@@ -102,6 +102,8 @@ MonoBehaviour:
   effectSmoke: {fileID: 1265396548600442, guid: 1f9a3b7d6a627a044bf71642e8f0bcbf,
     type: 2}
   effectHit: {fileID: 1506416361541210, guid: d6dce2f7b94e7284995cacee471c2873, type: 2}
+  effectExplode: {fileID: 1141181530070124, guid: 39f40afaffd8c624a9f60eab5662a5de,
+    type: 2}
 --- !u!114 &114880149284595822
 MonoBehaviour:
   m_ObjectHideFlags: 1
