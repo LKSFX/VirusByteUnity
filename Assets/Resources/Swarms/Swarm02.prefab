@@ -216,6 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swarmSpeedFactor: 1
+  alpha: 1
 --- !u!114 &114975239904905790
 MonoBehaviour:
   m_ObjectHideFlags: 1
