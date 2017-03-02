@@ -19,6 +19,7 @@ public class Slot : MonoBehaviour, IPauseAction, IPointerDownHandler, IPointerUp
     public int quantity = 1;
 
     private Dictionary<Item.ItemType, String> _prefabList = new Dictionary<Item.ItemType, String>() {
+        { Item.ItemType.ANTIVIRUS, "Items/Antivirus" },
         { Item.ItemType.BOMB, "Items/Bomb"}
     };
 

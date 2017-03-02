@@ -33,9 +33,9 @@ public class Grabber : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, ID
     [Range(1, 5)]
     public float targetGrabScale = 1f; // escala do objeto quando agarrado
     [Range(0.1f, 1f)]
-    public float growDuration;
+    public float growDuration = 1f;
     [Range(0.1f, 1f)]
-    public float shrinkDuration;
+    public float shrinkDuration = .5f;
 
     protected virtual void Awake() {
         _prTransform = transform.parent;
