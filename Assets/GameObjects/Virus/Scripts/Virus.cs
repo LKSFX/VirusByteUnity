@@ -52,12 +52,19 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     /// </summary>
     /// <param name="level"></param>
     public void onExplosionRange(ItemLevel level) {
-        _anim.SetTrigger("roasted");
+        _anim.SetTrigger("hurt");
+        _anim.SetBool("exploded", true);
         onDefeated();
         if (effectExplode != null) // instancia efeito de transição, dano por explosão
             Instantiate(effectExplode, transform.position, Quaternion.identity);
+        Invoke("turnRoasted", 0.4f);
         Invoke("onRoastedDeath", 2f);
     }
+
+    private void turnRoasted() {
+        _anim.SetTrigger("roasted");
+    }
+
     #endregion
 
     public void onRoastedDeath() {
