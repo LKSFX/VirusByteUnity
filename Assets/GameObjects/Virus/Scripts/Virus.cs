@@ -33,6 +33,9 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     protected bool _isHit;
     private bool _isAlive; // Vírus só causará danos quando cruzar o final da tela vivo
 
+    //Hashcodes
+    private int hashExploded = Animator.StringToHash("exploded");
+
     protected virtual void Awake() {
         _anim = GetComponent<Animator>();
         _isAlive = true;
@@ -52,8 +55,9 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     /// </summary>
     /// <param name="level"></param>
     public void onExplosionRange(ItemLevel level) {
+        if (_anim.GetBool(hashExploded)) return; // objeto já está em estado de dano por explosão, retorna.
         _anim.SetTrigger("hurt");
-        _anim.SetBool("exploded", true);
+        _anim.SetBool(hashExploded, true);
         onDefeated();
         if (effectExplode != null) // instancia efeito de transição, dano por explosão
             Instantiate(effectExplode, transform.position, Quaternion.identity);
