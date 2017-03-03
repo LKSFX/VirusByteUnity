@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IExplosionDetector {
-    void onExplosionRange(ItemInfo level);
+public interface ILaserDetector {
+    void onLaserRange(ItemInfo level);
 }

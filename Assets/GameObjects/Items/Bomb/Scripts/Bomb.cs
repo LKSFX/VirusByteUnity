@@ -48,7 +48,7 @@ public class Bomb : Item {
         for (int i = 0; i < total; i++) {
             detector = collisionList[i].gameObject.GetComponent<IExplosionDetector>();
             if (detector != null) {
-                detector.onExplosionRange(_level);
+                detector.onExplosionRange(_info);
             }
         }
         Destroy(gameObject);

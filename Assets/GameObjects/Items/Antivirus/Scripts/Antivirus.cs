@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Antivirus : Item {
 
-    private bool _allowDetonate;
+    private bool _allowDetonate = true;
+    private bool _isActive;
+    private GameObject laserBeam;
 
 	// Use this for initialization
 	protected override void Awake () {
@@ -28,8 +30,27 @@ public class Antivirus : Item {
         base.onDropHalfTargetScale();
     }
 
+    public void openLaser() {
+        if (!_allowDetonate || effectActive == null) return;
+        laserBeam = Instantiate(effectActive, transform.position, Quaternion.identity, transform.parent);
+        laserBeam.GetComponent<LaserBeam>().setItemInfo(_info);
+        StartCoroutine(Fade());
+    }
+
     public override void onSlotEnter() {
         base.onSlotEnter();
         CancelInvoke();
+    }
+
+    IEnumerator Fade() {
+        SpriteRenderer spr = GetComponent<SpriteRenderer>();
+        if (spr == null) yield break;
+        Color c;
+        for (float i = 1; i > 0; i-=0.05f) {
+            c = spr.color;
+            c.a = i;
+            spr.color = c;
+            yield return null;
+        }
     }
 }

@@ -9,7 +9,7 @@ public class Item : ItemGrabber {
     public GameObject effectActive;
 
     protected ItemType _type;
-    protected ItemLevel _level;
+    protected ItemInfo _info;
     protected Animator _anim;
     public ItemType type {
         get { return _type; }
@@ -18,7 +18,7 @@ public class Item : ItemGrabber {
     protected override void Awake() {
         base.Awake();
         _anim = GetComponent<Animator>();
-        _level = GameManager.instance.getItemLevel(_type);
+        _info = GameManager.instance.getItemLevel(_type);
         setAllowGrab(true);
     }
 

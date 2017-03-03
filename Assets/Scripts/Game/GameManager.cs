@@ -19,7 +19,7 @@ public class GameManager : GenericSingleton<GameManager> {
     private bool _isGamePaused;
 
     private List<IPauseAction> pauseActionList = new List<IPauseAction>();
-    private Dictionary<Item.ItemType, ItemLevel> _itemLevelList;
+    private Dictionary<Item.ItemType, ItemInfo> _itemLevelList;
 
     private void Awake() {
         load();
@@ -34,9 +34,9 @@ public class GameManager : GenericSingleton<GameManager> {
     }
 
     private void loadItemLevelList() {
-        _itemLevelList = new Dictionary<Item.ItemType, ItemLevel>();
-        _itemLevelList.Add(Item.ItemType.BOMB, new ItemLevel(0));
-        _itemLevelList.Add(Item.ItemType.ANTIVIRUS, new ItemLevel(0));
+        _itemLevelList = new Dictionary<Item.ItemType, ItemInfo>();
+        _itemLevelList.Add(Item.ItemType.BOMB, new ItemInfo(0));
+        _itemLevelList.Add(Item.ItemType.ANTIVIRUS, new ItemInfo(0));
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class GameManager : GenericSingleton<GameManager> {
     }
 
     #region Get's
-    public ItemLevel getItemLevel(Item.ItemType type) {
+    public ItemInfo getItemLevel(Item.ItemType type) {
         return _itemLevelList[type];
     }
     #endregion

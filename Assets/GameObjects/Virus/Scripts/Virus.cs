@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(OffscreenDetector), typeof(Animator))]
-public class Virus : MonoBehaviour, IExplosionDetector {
+public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
 
     public bool isDebug = false;
     public GameObject effectSmoke; // Efeito para quando morrer carbonizado
@@ -54,7 +54,7 @@ public class Virus : MonoBehaviour, IExplosionDetector {
     /// Destruído por explosão de item bomba
     /// </summary>
     /// <param name="level"></param>
-    public void onExplosionRange(ItemLevel level) {
+    public void onExplosionRange(ItemInfo level) {
         if (_anim.GetBool(hashExploded)) return; // objeto já está em estado de dano por explosão, retorna.
         _anim.SetTrigger("hurt");
         _anim.SetBool(hashExploded, true);
@@ -69,13 +69,33 @@ public class Virus : MonoBehaviour, IExplosionDetector {
         _anim.SetTrigger("roasted");
     }
 
+    public void onLaserRange(ItemInfo info) {
+        _anim.SetBool("eletrified", true);
+        onDefeated();
+        if (info.effect != null) {
+            LaserBeam lb = info.effect.GetComponent<LaserBeam>();
+            if (lb != null) {
+
+            }
+        }
+        Invoke("onEletrifiedDeath", 1f);
+    }
+
     #endregion
 
-    public void onRoastedDeath() {
+
+    #region Finalizações (fatalities)
+    private void onRoastedDeath() {
         if (effectSmoke != null) // instancia efeito de fumaça
             Instantiate(effectSmoke, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
+
+    private void onEletrifiedDeath() {
+        _render.material.shader = Shader.Find("2D/ElectricDefeat");
+    }
+
+    #endregion
 
     /// <summary>
     /// Chamar este método quando o vírus for destruído e não mais representar uma ameaça.
