@@ -179,9 +179,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4820131116121770}
   - component: {fileID: 95326703484158846}
-  - component: {fileID: 50660624822136658}
   - component: {fileID: 61976204388513178}
   - component: {fileID: 114284269264677316}
+  - component: {fileID: 50078962187623356}
+  - component: {fileID: 114779332293765898}
   m_Layer: 0
   m_Name: Laser
   m_TagString: Untagged
@@ -372,7 +373,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50660624822136658
+--- !u!50 &50078962187623356
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
@@ -405,7 +406,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 0.2, y: 0.05}
 --- !u!95 &95326703484158846
 Animator:
   serializedVersion: 3
@@ -424,6 +425,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114284269264677316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1854301147397158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 660149ccdbcc5364ea883a4b15212ddf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114779332293765898
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

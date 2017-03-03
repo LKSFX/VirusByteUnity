@@ -91,7 +91,8 @@ MonoBehaviour:
   growDuration: 1
   shrinkDuration: 0.5
   icon: {fileID: 1191751527046546, guid: ade822a994633394cbaf89dd6a0717a8, type: 2}
-  effectActive: {fileID: 0}
+  effectActive: {fileID: 1854301147397158, guid: aa36812b53b20d24397b04a6642e9046,
+    type: 2}
 --- !u!212 &212415818978092038
 SpriteRenderer:
   m_ObjectHideFlags: 1

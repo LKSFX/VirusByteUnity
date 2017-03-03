@@ -6,9 +6,12 @@ public class LaserBeam : MonoBehaviour, IItemEffect {
 
 	private bool _isActive;
     private ItemInfo _itemInfo;
+    private Animator _anim;
 
     private void Start() {
         _isActive = true;
+        _anim = GetComponent<Animator>();
+        Invoke("close", 10f);
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -30,7 +33,12 @@ public class LaserBeam : MonoBehaviour, IItemEffect {
         _itemInfo.effect = this.gameObject;
     }
 
+    public void close() {
+        _anim.SetTrigger("finish");
+    }
+
     public void finishedAnimation() {
         setActive(false);
     }
+
 }

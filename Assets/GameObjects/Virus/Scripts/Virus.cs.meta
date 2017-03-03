@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: a0fcf496caff0104ebcd9352ef98e220
-timeCreated: 1487089791
+timeCreated: 1488573775
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - effectSmoke: {instanceID: 0}
+  - effectHit: {instanceID: 0}
+  - effectExplode: {instanceID: 0}
+  - matElectrifiedDeath: {fileID: 2100000, guid: 32facdd2a035bc3478af364a114b09f7,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

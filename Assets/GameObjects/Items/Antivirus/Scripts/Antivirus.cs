@@ -52,5 +52,7 @@ public class Antivirus : Item {
             spr.color = c;
             yield return null;
         }
+
+        Destroy(gameObject);
     }
 }

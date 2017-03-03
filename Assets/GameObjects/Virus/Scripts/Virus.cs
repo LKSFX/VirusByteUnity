@@ -8,7 +8,8 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
     public bool isDebug = false;
     public GameObject effectSmoke; // Efeito para quando morrer carbonizado
     public GameObject effectHit; // Efeito para quando sofrer hit
-    public GameObject effectExplode; 
+    public GameObject effectExplode;
+    public Material matElectrifiedDeath; 
 
     #region Propriedades
     public bool hasMoveController { // Retorna verdadeiro se este vírus tiver um controlador de movimento
@@ -72,13 +73,13 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
     public void onLaserRange(ItemInfo info) {
         _anim.SetBool("eletrified", true);
         onDefeated();
-        if (info.effect != null) {
+        if (info != null && info.effect != null) {
             LaserBeam lb = info.effect.GetComponent<LaserBeam>();
             if (lb != null) {
-
+                transform.parent = info.effect.transform.parent;
             }
         }
-        Invoke("onEletrifiedDeath", 1f);
+        StartCoroutine(OnEletrifiedDeath());
     }
 
     #endregion
@@ -91,8 +92,32 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
         Destroy(gameObject);
     }
 
-    private void onEletrifiedDeath() {
-        _render.material.shader = Shader.Find("2D/ElectricDefeat");
+    private IEnumerator OnEletrifiedDeath() {
+
+        yield return new WaitForSeconds(1.5f);
+
+        _render.material = matElectrifiedDeath;
+
+        yield return new WaitForSeconds(0.2f);
+
+        _render.material.SetColor(Shader.PropertyToID("_Color"), Color.black);
+        //_render.color = Color.black;
+
+        yield return new WaitForSeconds(0.2f);
+
+        Color c;
+        float alpha = 1f;
+
+        while (alpha > 0) {
+            alpha -= Time.deltaTime * 2;
+            c = _render.material.GetColor(Shader.PropertyToID("_Color"));
+            c.a = alpha;
+            _render.material.SetColor(Shader.PropertyToID("_Color"), c);
+            yield return null;
+        }
+
+        Destroy(gameObject);
+        // Fim da animação morte por eletricidade
     }
 
     #endregion

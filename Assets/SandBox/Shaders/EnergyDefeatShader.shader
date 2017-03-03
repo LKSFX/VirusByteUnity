@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		//_MainTex("Sprite Texture", 2D) = "white"
+		_MainTex("Sprite Texture", 2D) = "white" {}
 		_Color("Tint", Color) = (1,1,1,1)
 	}
 		SubShader
@@ -10,7 +10,8 @@
 		Tags
 		{
 			"Queue" = "Transparent"
-			//"RenderType" = "Opaque"
+			//"RenderType" = "Transparent"
+			//"IgnoreProjector" = "True"
 		}
 		
 		Blend SrcAlpha OneMinusSrcAlpha
@@ -55,6 +56,7 @@
 				fixed4 col = tex2D(_MainTex, i.uv);
 				float4 c = i.color;
 				c.a = col.a;
+				c *= _Color;
 
 				//col = 1 - col;
 				return c;
