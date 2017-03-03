@@ -5,9 +5,20 @@ using UnityEngine;
 
 public class CanvasControl : MonoBehaviour, IPauseAction {
 
+    public GameObject _pauseMenu;
+
+    private void Awake() {
+        _pauseMenu = transform.Find("PauseMenu").gameObject;
+    }
+
     // Use this for initialization
     void OnEnable() {
         GameManager.instance.addOnPauseAction(this);
+        if (_pauseMenu != null) {
+            if (_pauseMenu.activeInHierarchy) {
+                GameManager.instance.setGamePause(true);
+            }
+        }
     }
 
     void OnDisable() {
@@ -17,10 +28,10 @@ public class CanvasControl : MonoBehaviour, IPauseAction {
     }
 
     public void onPause() {
-        transform.Find("PauseMenu").gameObject.SetActive(true);
+        _pauseMenu.SetActive(true);
     }
 
     public void onUnpause() {
-        transform.Find("PauseMenu").gameObject.SetActive(false);
+        _pauseMenu.SetActive(false);
     }
 }
