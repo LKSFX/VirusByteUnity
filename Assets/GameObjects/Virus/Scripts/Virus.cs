@@ -30,6 +30,7 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
 
     protected MovementController _movementController;
     protected SpriteRenderer _render;
+    protected Collider2D _collider;
     protected Animator _anim;
     protected bool _isHit;
     private bool _isAlive; // Vírus só causará danos quando cruzar o final da tela vivo
@@ -42,6 +43,7 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
         _isAlive = true;
         _movementController = GetComponent<MovementController>();
         _render = GetComponent<SpriteRenderer>();
+        _collider = GetComponent<Collider2D>();
         OffscreenDetector detector = GetComponent<OffscreenDetector>();
         detector.onOut = onOffscreen;
         detector.onBottomOut = onBottomOut;
@@ -93,9 +95,15 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
     }
 
     private IEnumerator OnEletrifiedDeath() {
-
+        /// Manda vírus para cima do efeito do laser
+        _render.sortingLayerName = "LayerSprites1";
+        _render.sortingOrder = 11;
         yield return new WaitForSeconds(1.5f);
 
+        // muda sprite para hurt
+        _anim.Play("Hurt");
+        _anim.speed = 0;
+        //_anim.enabled = false;
         _render.material = matElectrifiedDeath;
 
         yield return new WaitForSeconds(0.2f);
@@ -128,6 +136,9 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
     /// </summary>
     public virtual void onDefeated() {
         _isAlive = false;
+        //após ser destruído não recebe interações
+        if (_collider != null)
+            _collider.enabled = false;
         _render.sortingOrder = -10;
         setMove(false);
     }
