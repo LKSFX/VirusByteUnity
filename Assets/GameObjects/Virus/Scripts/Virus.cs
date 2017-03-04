@@ -100,7 +100,8 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
 
         yield return new WaitForSeconds(0.2f);
 
-        _render.material.SetColor(Shader.PropertyToID("_Color"), Color.black);
+        int colorPropertyID = Shader.PropertyToID("_Color");
+        _render.material.SetColor(colorPropertyID, Color.black);
         //_render.color = Color.black;
 
         yield return new WaitForSeconds(0.2f);
@@ -109,10 +110,10 @@ public class Virus : MonoBehaviour, IExplosionDetector, ILaserDetector {
         float alpha = 1f;
 
         while (alpha > 0) {
-            alpha -= Time.deltaTime * 2;
-            c = _render.material.GetColor(Shader.PropertyToID("_Color"));
+            alpha -= Time.deltaTime * 3;
+            c = _render.material.GetColor(colorPropertyID);
             c.a = alpha;
-            _render.material.SetColor(Shader.PropertyToID("_Color"), c);
+            _render.material.SetColor(colorPropertyID, c);
             yield return null;
         }
 
