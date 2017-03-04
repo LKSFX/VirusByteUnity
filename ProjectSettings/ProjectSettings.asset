@@ -462,7 +462,7 @@ PlayerSettings:
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Build: 1
+    Build: 0
     UNet: 1
   cloudProjectId: 6cc367fd-4732-43e9-b227-5fa3ad169f4c
   projectName: VirusByte
